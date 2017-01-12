@@ -1,0 +1,178 @@
+include ./common/header
+
+.row.add-product-page
+    .col-md-8.col-md-offset-2
+        h3
+            | Создание продукта
+        .container
+            label
+                | название товара
+                input(type='text', placeholder='Введите название товара')
+            label
+                | добавить картинки
+                div
+                    span.picture
+                        button.btn.btn-default
+                            i.glyphicon.glyphicon-camera
+                            input(type="file" onChange="onImageLoad()")
+                        span.img-container
+                            img(src="")
+                            div.img-background
+
+                    span.picture
+                        button.btn.btn-default
+                            i.glyphicon.glyphicon-camera
+                            input(type="file" onChange="onImageLoad()")
+                        span.img-container
+                            img(src="")
+                            div.img-background
+
+                    span.picture
+                        button.btn.btn-default
+                            i.glyphicon.glyphicon-camera
+                            input(type="file" onChange="onImageLoad()")
+                        span.img-container
+                            img(src="")
+                            div.img-background
+            label
+                | добавить видео
+                .video-container
+                    input(type="text" placeholder="Введите ссылку на видео" onChange="onVideoUrlChange()")
+                    span.iframe-container
+                        iframe(src="" frameBorder="0")
+                        span.iframe-background
+
+            label
+                | стоимость
+                input(type='text', placeholder='Введите стоимость')
+            label
+                | количество единиц (для минимального заказа)
+                input(type='number' min="1")
+            label
+                | стоимость (для минимального заказа)
+                input(type='text', placeholder='Введите минимальную стоимость')
+            label
+                button.btn.btn-default.add-btn#addPrices
+                    | Указать цены за единицу продукции в зависимости от размера заказа
+                    i.glyphicon.glyphicon-plus
+                .add-price-block.hidden
+                    .add-price-line.header
+                        h4
+                            | Цены за единицу продукции в зависимости от размера заказа
+                        span.col-input
+                            | цена за продукт
+                        span.col-input
+                            | цена заказа
+                        span.col-button
+                            | добавить
+                        span.col-button
+                            | удалить
+                    .add-price-container
+            label
+                button.btn.btn-default.add-btn#addDelivery
+                    | Указать стоимость доставки
+                    i.glyphicon.glyphicon-plus
+                .add-delivery-block.hidden
+                    .add-delivery-line.header
+                        h4
+                            | Стоимость доставки
+                        span.col-input
+                            | регион
+                        span.col-input
+                            | цена доставки
+                        span.col-button
+                            | добавить
+                        span.col-button
+                            | удалить
+                    .add-delivery-container
+
+include ./common/footer
+
+script.
+    var newLine = '<div class="add-price-line"><input class="col-input" type="text" /><input class="col-input" type="text" /><button class="btn btn-default col-button" onClick="addPricesToForm()"><i class="glyphicon glyphicon-plus"></i></button><button class="btn btn-danger col-button" onClick="removePricesToForm()"><i class="glyphicon glyphicon-minus"></i></button></div>';
+
+    window.onload = function() {
+        var self = this;
+        $('#addPrices').click(showPricesForm);
+        $('#addDelivery').click(showDeliveryForm);
+        $('.img-container').click(removeImg);
+
+        function showPricesForm() {
+            var container = $('.add-price-container');
+            $('#addPrices').addClass('hidden');
+            $('.add-price-block').removeClass('hidden');
+            container.html( container.html() +  newLine);
+        }
+
+        function showDeliveryForm() {
+            var container = $('.add-delivery-container');
+            $('#addDelivery').addClass('hidden');
+            $('.add-delivery-block').removeClass('hidden');
+            container.html(container.html() + newLine);
+        }
+
+        function removeImg() {
+            var target = event.currentTarget;
+            $(target).find('img').attr('src', '');
+            $(target).prev().removeClass('hidden');
+        }
+    }
+
+    function addPricesToForm() {
+        event.preventDefault();
+        var target = $(event.currentTarget);
+        target.parent().after(newLine);
+    }
+
+    function removePricesToForm() {
+        event.preventDefault();
+        var target = $(event.currentTarget);
+        target.parent().remove();
+
+        if(! $('.add-price-container').children().length) {
+            $('#addPrices').removeClass('hidden');
+            $('.add-price-block').addClass('hidden');
+        }
+    }
+
+    function addDeliveryToForm() {
+        event.preventDefault();
+        var target = $(event.currentTarget);
+        target.parent().after(newLine);
+    }
+
+    function removeDeliveryToForm() {
+        event.preventDefault();
+        var target = $(event.currentTarget);
+        target.parent().remove();
+
+        if (!$('.add-delivery-container').children().length) {
+            $('#addDelivery').removeClass('hidden');
+            $('.add-delivery-block').addClass('hidden');
+        }
+    }
+
+    function onImageLoad() {
+        var input = event.target;
+        var buttonUpload = $(input).parent();
+        var image = buttonUpload.siblings('.img-container').find('img');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                buttonUpload.addClass('hidden');
+                $(image).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function onVideoUrlChange() {
+        var target = event.currentTarget;
+        var url = $(target).val();
+        var id = url.slice(url.indexOf('?v=') + 3);
+        var newUrl = 'https://www.youtube.com/embed/' + id;
+        $(target).siblings('.iframe-container').find('iframe').attr('src', newUrl);
+    }

@@ -1,0 +1,14 @@
+@import "variables";
+
+.footer-component {
+  background-color: $dark-color;
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  line-height: 35px;
+
+  @include box-shadow(0px 0px 2px 1px rgba(168,165,168,1));
+}

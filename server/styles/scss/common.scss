@@ -1,0 +1,54 @@
+@import "variables.scss";
+
+a {
+  color: #555;
+  cursor: pointer;
+
+  &:hover {
+    color: darken(#555, 10%);
+  }
+}
+
+.row {
+  margin: 0;
+}
+
+label {
+  border-bottom: solid 1px darkgrey;
+  display: inline-block;
+  input[type="text"] {
+    border: none;
+    padding: 5px 10px;
+    margin: 1px 0;
+    font-weight: 100;
+    outline: none;
+  }
+}
+
+.btn {
+  text-shadow: none;
+  background-image: none;
+  border-radius: 2px;
+}
+
+.btn-default {
+  background-color: $main-gold-color;
+  color: #fff;
+  border: solid 1px darken($main-gold-color, 5%) !important;
+
+  &:hover, &:focus, &:active:hover {
+    background-color: darken($main-gold-color, 10%);
+    color: #fff;
+  }
+
+  &:active {
+    background-color: lighten($main-gold-color, 10%);
+  }
+}
+
+.container {
+    text-align: center;
+    background: #eaeaea;
+    border: solid 1px #d8d3d3;
+    padding: 15px;
+  }

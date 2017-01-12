@@ -9,3 +9,4 @@
 server/.knex/
 server/migrations/
 server/node_modules/
+server/styles/css/

@@ -1,0 +1,40 @@
+@import "variables.scss";
+
+.login-page {
+  .container {
+    min-width: 300px;
+    margin-top: 5%;
+  }
+
+  ul.nav {
+    display: inline-block;
+    li {
+      a {
+        color: $main-gold-color;
+      }
+      &.active {
+        a {
+          color: $dark-color;
+        }
+      }
+    }
+
+  }
+
+  form {
+    background: #fff;
+    margin-top: -5px;
+    padding: 10px;
+    & > * {
+      display: block;
+      margin: 20px auto;
+    }
+
+    label {
+      max-width: 300px;
+      i {
+        color: $dark-color;
+      }
+    }
+  }
+}

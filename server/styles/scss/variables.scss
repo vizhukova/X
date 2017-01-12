@@ -1,0 +1,9 @@
+$main-gold-color: #ca9a48; //чосновной цвет
+$gray-color: #555; //цвет подложек форм
+$dark-color: #4a4747;//цвет хедера и футера
+
+@mixin box-shadow($options) {
+  -webkit-box-shadow: $options;
+  -moz-box-shadow: $options;
+  box-shadow: $options;
+}
