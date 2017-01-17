@@ -1,0 +1,97 @@
+include ./common/header
+
+.row.register-page
+    .col-md-8.col-md-offset-2
+        h3
+            | Создание продукта
+        .container
+            label
+                span ФИО
+                input(type='text', placeholder='Введите название товара')
+            label
+                span дата рождения
+
+                .dropdown-container
+                    .dropdown
+                        button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
+                            | день
+                            span.caret
+                        ul.dropdown-menu
+                            - for (var x = 1; x <= 31; x++)
+                              .li= x
+                    .dropdown
+                        button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
+                            | месяц
+                            span.caret
+                        ul.dropdown-menu
+                            li январь
+                            li февраль
+                            li март
+                            li апрель
+                            li май
+                            li июнь
+                            li июль
+                            li август
+                            li сентябрь
+                            li октябрь
+                            li ноябрь
+                            li декабрь
+
+                    .dropdown
+                        button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
+                            | год
+                            span.caret
+                        ul.dropdown-menu
+                            - for (var x = 1930; x <= 1990; x++)
+                              .li= x
+
+            label
+                span эл. почта
+                input(type='text', placeholder='Введите название эл. почту')
+            label
+                span загрузить фото
+                span.picture
+                    button.btn.btn-default
+                        i.glyphicon.glyphicon-camera
+                        input(type="file" onChange="onImageLoad()")
+                    span.img-container
+                        img(src="")
+                        div.img-background
+            label
+                span загрузить документы ФОП
+                span.picture
+                    button.btn.btn-default
+                        i.glyphicon.glyphicon-list-alt
+                        input(type="file" onChange="onDocumentLoad()")
+                    span.img-container
+                        img(src="")
+                        div.img-background
+
+            button.btn.btn-default.pull-right
+                | Далее »
+
+include ./common/footer
+
+script.
+    function onImageLoad() {
+        var input = event.target;
+        var buttonUpload = $(input).parent();
+        var image = buttonUpload.siblings('.img-container').find('img');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                buttonUpload.addClass('hidden');
+                $(image).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function onDocumentLoad() {
+        var input = event.target;
+        var buttonUpload = $(input).parent();
+        buttonUpload.addClass('loaded');
+    }

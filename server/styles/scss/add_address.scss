@@ -1,0 +1,77 @@
+@import "variables";
+
+.add-address-page {
+  .container {
+    text-align: right;
+    padding: 15px 30px;
+    width: 100%;
+  }
+  label {
+    display: block;
+    border: none;
+    margin: 25px 0;
+
+    &>* {
+      display: inline-block;
+
+      &:nth-child(1) {
+        color: #4a4747;
+        font-size: 14px;
+        width: 200px;
+        text-align: right;
+      }
+      &:nth-child(2) {
+        width: calc(100% - 200px);
+
+        &.dropdown {
+          text-align: left;
+        }
+
+        &.button-container {
+          text-align: left;
+          button {
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+
+    input[type="text"] {
+      border-bottom: solid 1px darkgrey;
+      //width: 100%;
+      background: white;
+    }
+    input[type="number"] {
+      margin-left: 10px;
+    }
+    .add-btn {
+      i.glyphicon-plus {
+        font-size: 12px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .add-price-block, .add-delivery-block {
+    .add-price-line, .add-delivery-line {
+      margin: 10px 0;
+      & > * {
+        margin-right: 10px;
+      }
+      input[type="text"] {
+        background-color: #fff;
+      }
+    }
+  }
+
+  .col-input {
+    width: 20% !important;
+    display: inline-block;
+  }
+
+  .col-button {
+    width: 10% !important;
+    display: inline-block;
+  }
+
+
+}

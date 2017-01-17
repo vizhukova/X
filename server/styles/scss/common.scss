@@ -31,6 +31,11 @@ label {
   border-radius: 2px;
 }
 
+.btn-gray {
+  background-color: #fbf9f9;
+  border: solid 1px #d8d3d3;
+}
+
 .btn-default {
   background-color: $main-gold-color;
   color: #fff;
@@ -51,4 +56,5 @@ label {
     background: #eaeaea;
     border: solid 1px #d8d3d3;
     padding: 15px;
+    width: 100%;
   }

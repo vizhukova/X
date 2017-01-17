@@ -1,21 +1,22 @@
 include ./common/header
 
 .row.login-page
-    .container.col-sm-6.col-sm-offset-3.container
-        ul.nav.nav-tabs
-            li.active(role='presentation')
-                a(href='#') Логин
-            li(role='presentation')
-                a(href='#') Регистрация
-        form.login
-            label.email
-                i.glyphicon.glyphicon-envelope
-                input(type='text', name='', placeholder='Электронная почта')
-            label
-                i.glyphicon.glyphicon-eye-close
-                input(type='text', name='', placeholder='Пароль')
-            button.btn.btn-default(type='button') Войти
-            a.forgot-password Забыли пароль?
+    .col-sm-6.col-sm-offset-3
+        .container
+            ul.nav.nav-tabs
+                li.active(role='presentation')
+                    a(href='#') Логин
+                li(role='presentation')
+                    a(href='#') Регистрация
+            form.login
+                label.email
+                    i.glyphicon.glyphicon-envelope
+                    input(type='text', name='', placeholder='Электронная почта')
+                label
+                    i.glyphicon.glyphicon-eye-close
+                    input(type='text', name='', placeholder='Пароль')
+                button.btn.btn-default(type='button') Войти
+                a.forgot-password Забыли пароль?
         //
           <form class="register">
           <label>

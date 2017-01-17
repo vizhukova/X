@@ -6,10 +6,10 @@ include ./common/header
             | Создание продукта
         .container
             label
-                | название товара
+                span название товара
                 input(type='text', placeholder='Введите название товара')
             label
-                | добавить картинки
+                span добавить картинки
                 div
                     span.picture
                         button.btn.btn-default
@@ -35,7 +35,7 @@ include ./common/header
                             img(src="")
                             div.img-background
             label
-                | добавить видео
+                span.video-label добавить видео
                 .video-container
                     input(type="text" placeholder="Введите ссылку на видео" onChange="onVideoUrlChange()")
                     span.iframe-container
@@ -43,48 +43,52 @@ include ./common/header
                         span.iframe-background
 
             label
-                | стоимость
+                span стоимость
                 input(type='text', placeholder='Введите стоимость')
             label
-                | количество единиц (для минимального заказа)
+                span количество единиц (для минимального заказа)
                 input(type='number' min="1")
             label
-                | стоимость (для минимального заказа)
+                span стоимость (для минимального заказа)
                 input(type='text', placeholder='Введите минимальную стоимость')
             label
-                button.btn.btn-default.add-btn#addPrices
-                    | Указать цены за единицу продукции в зависимости от размера заказа
-                    i.glyphicon.glyphicon-plus
-                .add-price-block.hidden
-                    .add-price-line.header
-                        h4
-                            | Цены за единицу продукции в зависимости от размера заказа
-                        span.col-input
-                            | цена за продукт
-                        span.col-input
-                            | цена заказа
-                        span.col-button
-                            | добавить
-                        span.col-button
-                            | удалить
-                    .add-price-container
+                span
+                div
+                    button.btn.btn-default.add-btn#addPrices
+                        | Указать цены за единицу продукции в зависимости от размера заказа
+                        i.glyphicon.glyphicon-plus
+                    .add-price-block.hidden
+                        .add-price-line.header
+                            h4
+                                | Цены за единицу продукции в зависимости от размера заказа
+                            span.col-input
+                                | цена за продукт
+                            span.col-input
+                                | цена заказа
+                            span.col-button
+                                | добавить
+                            span.col-button
+                                | удалить
+                        .add-price-container
             label
-                button.btn.btn-default.add-btn#addDelivery
-                    | Указать стоимость доставки
-                    i.glyphicon.glyphicon-plus
-                .add-delivery-block.hidden
-                    .add-delivery-line.header
-                        h4
-                            | Стоимость доставки
-                        span.col-input
-                            | регион
-                        span.col-input
-                            | цена доставки
-                        span.col-button
-                            | добавить
-                        span.col-button
-                            | удалить
-                    .add-delivery-container
+                span
+                div
+                    button.btn.btn-default.add-btn#addDelivery
+                        | Указать стоимость доставки
+                        i.glyphicon.glyphicon-plus
+                    .add-delivery-block.hidden
+                        .add-delivery-line.header
+                            h4
+                                | Стоимость доставки
+                            span.col-input
+                                | регион
+                            span.col-input
+                                | цена доставки
+                            span.col-button
+                                | добавить
+                            span.col-button
+                                | удалить
+                        .add-delivery-container
 
 include ./common/footer
 
