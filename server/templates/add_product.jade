@@ -6,10 +6,18 @@ include ./common/header
             | Создание продукта
         .container
             label
-                span название товара
+                span Название товара
                 input(type='text', placeholder='Введите название товара')
             label
-                span добавить картинки
+                span Категория товара
+                .dropdown
+                    button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
+                        | Выберите категорию
+                        span.caret
+                    ul.dropdown-menu
+                        li еда
+            label
+                span Добавить картинки
                 div
                     span.picture
                         button.btn.btn-default
@@ -43,13 +51,13 @@ include ./common/header
                         span.iframe-background
 
             label
-                span стоимость
+                span Стоимость
                 input(type='text', placeholder='Введите стоимость')
             label
-                span количество единиц (для минимального заказа)
+                span Количество единиц (для минимального заказа)
                 input(type='number' min="1")
             label
-                span стоимость (для минимального заказа)
+                span Стоимость (для минимального заказа)
                 input(type='text', placeholder='Введите минимальную стоимость')
             label
                 span

@@ -58,3 +58,12 @@ label {
     padding: 15px;
     width: 100%;
   }
+
+.dropdown {
+  button {
+    .caret {
+      margin-left: 5px;
+    }
+  }
+}
+

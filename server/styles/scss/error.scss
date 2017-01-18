@@ -1,0 +1,18 @@
+@import "variables";
+
+.error-page {
+  .error-container {
+    width: 223px;
+    text-align: center;
+    display: block;
+    margin: 25% auto 0 auto;
+  }
+
+  span.num {
+    font-size: 100px;
+  }
+  span.comment {
+    font-size: 50px;
+    display: block;
+  }
+}

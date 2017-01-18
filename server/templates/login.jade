@@ -7,7 +7,7 @@ include ./common/header
                 li.active(role='presentation')
                     a(href='#') Логин
                 li(role='presentation')
-                    a(href='#') Регистрация
+                    a(href='#{domain}register') Регистрация
             form.login
                 label.email
                     i.glyphicon.glyphicon-envelope
@@ -17,18 +17,5 @@ include ./common/header
                     input(type='text', name='', placeholder='Пароль')
                 button.btn.btn-default(type='button') Войти
                 a.forgot-password Забыли пароль?
-        //
-          <form class="register">
-          <label>
-          <input type="text" name="" placeholder="Электронная почта">
-          </label>
-          <label>
-          <input type="text" name="" placeholder="Пароль">
-          </label>
-          <label>
-          <input type="text" name="" placeholder="Подтвердите пароль">
-          </label>
-          <button type="button" class="btn btn-default">Зарегистрироваться</button>
-          </form>
 
 include ./common/footer
