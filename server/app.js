@@ -23,7 +23,7 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/register', function(req, res) {
-    res.render('register', {
+    res.render('seller/register', {
         css_name: 'register',
         domain: domain
     });

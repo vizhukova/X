@@ -7,6 +7,5 @@
 .idea/dataSources.local.xml
 .idea/dataSources/
 server/.knex/
-server/migrations/
 server/node_modules/
 server/styles/css/
