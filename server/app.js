@@ -1,75 +1,67 @@
-const express = require('express');
-var cors = require('cors');
+var express = require('express');
 var path = require('path');
-var jade = require('jade');
-const port = 4040;
-const app = express();
-const domain = "http://localhost:4040/";
+var favicon = require('serve-favicon');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var methodOverride = require('method-override');
+var morgan = require('morgan');
+var config = require('./config');
+var _ = require('lodash');
+var jwt = require('jwt-simple');
+var moment = require('moment');
 
-app.use(cors());
+var app = express();
+var http = require('http').Server(app);
+
+app.use(morgan('combined'));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(cookieParser());
 app.set('view engine', 'jade');
-app.use(express.static('./server'));
 app.set('views', path.join(__dirname, 'templates'));
-app.use(express.static(__dirname + '/../server'));
-app.use('/post', express.static('/../../server'));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(methodOverride('_method'));
 
-app.use(require('./routes/api'));
+var timestamp = Date.now();
+var designClass = config.get('designClass');
 
-app.get('/login', function(req, res) {
-    res.render('login', {
-        css_name: 'login',
-        domain: domain
-    });
+/**
+ * Отрисовка страницы клиента
+ */
+app.get('/', function(req, res){
+   res.render('client', {timestamp: timestamp, designClass: designClass})
 });
 
-app.get('/register', function(req, res) {
-    res.render('seller/register', {
-        css_name: 'register',
-        domain: domain
-    });
-});
+// app.use(require('./routes/api'));
 
-app.get('/product/new', function(req, res) {
-    res.render('add_product', {
-        css_name: 'add_product',
-        domain: domain
-    });
-});
 
-app.get('/addresses', function(req, res) {
-    res.render('addresses', {
-        css_name: 'addresses',
-        domain: domain
-    });
-});
-
-app.get('/addresses/new', function(req, res) {
-    res.render('add_address', {
-        css_name: 'add_address',
-        domain: domain
-    });
-});
-
-app.get('/', function(req, res) {
-    res.render('main', {
-        css_name: 'main',
-        domain: domain
-    });
-});
-
-app.get('*', function(req, res) {
-    res.render('error', {css_name: 'error'});
-});
-
-// app.use((req, res) => {
-//     // res.sendFile('templates/register.html', {root: './server'});
-//     // res.render('login', {css_name: 'login'});
-//     // res.render('add_product', {css_name: 'add_product'});
-//     // res.render('register', {css_name: 'register'});
-//     // res.render('main', {css_name: 'main'});
-//     // res.render('addresses', {css_name: 'addresses'});
-//     res.render('add_address', {css_name: 'add_address'});
+// /**
+//  * Отрисовка страницы партнера
+//  */
+// app.get('/:partner', function(req, res){
+//
+//     res.render('partner', {designClass: designClass, timestamp: timestamp});
 // });
 
-app.listen(port);
-console.log("server started on port " + port);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  if (req.xhr) {
+    checkError(err, res);
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  res.status(500);
+  res.render('error', { error: err });
+});
+
+var server = http.listen(config.get('port'), function() {
+    console.log("Listening %s on port: %s", server.address().address, server.address().port)
+});

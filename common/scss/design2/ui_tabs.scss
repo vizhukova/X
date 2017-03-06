@@ -1,0 +1,39 @@
+.tabs{
+
+  padding: 0;
+  list-style: none;
+  position: relative;
+  z-index: 5;
+
+  li{
+    float: left;
+    text-align: center;
+    height: 48px;
+    line-height: 48px;
+    position: relative;
+    margin-right: 5px;
+    margin-top: 5px;
+
+
+    padding: 0 16px;
+    min-width: 100px;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 100;
+    cursor: pointer;
+
+    &.active{
+      background: #FFFFFF;
+    }
+  }
+}
+
+.tab-body{
+  top:-15px;
+
+  background: #fff;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 5;
+  padding: 15px;
+}

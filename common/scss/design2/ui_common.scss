@@ -1,0 +1,40 @@
+html, body, #app-container{
+  height: 100%;
+}
+
+.clearfix{
+  &:before{
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+  &:after{
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+
+}
+
+.row {
+   padding-right: 15px;
+   padding-left: 15px;
+  }
+
+.boxed {
+  background: #fff;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 0;
+  padding: 15px;
+  color: #76787B;
+  border: 1px solid #EAEAEA;
+}
+
+.app{
+  width: 85%;
+  margin: 20px auto;
+  //background-color: #fff;
+  min-height: calc(100% - 40px);
+  padding-top: 1px;
+}

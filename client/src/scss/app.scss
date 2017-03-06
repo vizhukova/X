@@ -1,0 +1,47 @@
+@import '../../../common/scss/app';
+@import './vendors/datepicker';
+
+.btn-submit {
+    margin: 15px;
+}
+
+.product-form {
+  margin-bottom: 10px;
+}
+
+.profile-list {
+  list-style: none;
+}
+
+.profile-form {
+  z-index: 10!important;
+}
+
+/*---------------------------for basket---------------------------*/
+
+
+#basket {
+    width: 150px;
+    background-color: #FDFDFD;
+    border: 1px solid #ccc;
+}
+
+
+#basket div.basket-picture {
+  background: url("./../images/basket.png") no-repeat no-repeat;
+    text-align: center;
+    background-size: contain;
+    width: 40%;
+    height: 50px;
+    display: inline-block;
+}
+
+#basket div.basket-quantity {
+  display: inline-block;
+    line-height: 50px;
+    vertical-align: top;
+    /* text-align: center; */
+    height: 50px;
+    width: 60%;
+    padding-left: 15px;
+}
