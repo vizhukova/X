@@ -1,11 +1,9 @@
 .PHONY: refresh_db, build_static
 
 refresh_db:
-	psql -h 127.0.0.1 -U postgres -d template1 -f server/drop.sql && \
-	psql -h 127.0.0.1 -U postgres -d template1 -f server/init.sql && \
-	psql -h 127.0.0.1 -U postgres -d vippay -f server/extensions.sql && \
+	psql -h 127.0.0.1 -U postgres -d template1 -f server/sql_scripts/drop.sql && \
+	psql -h 127.0.0.1 -U postgres -d template1 -f server/sql_scripts/init.sql && \
 	cd server && knex migrate:latest && \
-	psql -h 127.0.0.1 -U vippay -d vippay -f seed.sql && \
 	knex seed:run
 
 build_static:

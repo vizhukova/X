@@ -3,8 +3,7 @@ var router = express.Router();
 
 var api_prefix = '/api';
 
-router.use(api_prefix, require('./auth'));
-router.use(api_prefix, require('./users'));
-router.use(api_prefix, require('./partners'));
+router.use(api_prefix, require('./files'));
+router.use(api_prefix, require('./seller'));
 
 module.exports = router;

@@ -1,30 +1,36 @@
 import alt from '../alt';
 import AuthActions from './../actions/AuthActions';
-import PartnersAction from './../actions/PartnersAction';
 
 class AuthStore {
 
     constructor() {
 
-        this.bindListeners({
-            onCheck: AuthActions.CHECK,
-            onGetMe: AuthActions.GET_ME,
-            out: AuthActions.OUT
-        });
+        var ls = localStorage.getItem('store.auth');
+        this.auth = ls ? JSON.parse(ls) : {
+            token: '',
+            id: ''
+        };
 
         this.user = {};
+
+        this.bindListeners({
+            onRegister: AuthActions.REGISTER
+        });
     }
 
-    onCheck(auth){
-        this.auth = auth;
-    }
+    onAuth(auth) {
+       this.auth = auth;
+       localStorage.setItem('store.auth', JSON.stringify(auth));
+   }
 
-    onGetMe(user){
-        this.user = user;
-    }
+    onLogOut() {
+       this.auth = {};
+       localStorage.setItem('store.auth', JSON.stringify({}));
+   }
 
-    out(data) {
-        this.isOut = true;
+    onRegister(data) {
+        this.user = data.user;
+        this.onAuth({id: data.user.id, token: data.token});
     }
 
 }

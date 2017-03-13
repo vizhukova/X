@@ -1,10 +1,10 @@
 include ../common/header
 
-.row.register-page
+.row.row-body.register-page
     .col-md-8.col-md-offset-2
         h3
             | Регистрация
-        .container
+        form.container
             label
                 span ФИО
                 input#name(type='text', placeholder='Введите название товара')
@@ -14,46 +14,57 @@ include ../common/header
                 .dropdown-container
                     .dropdown#day
                         button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
-                            | день
+                            span.current-value день
                             span.caret
                         ul.dropdown-menu
                             - for (var x = 1; x <= 31; x++)
-                               li= x
+                               li(data-value=x)= x
                     .dropdown#mounth
                         button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
-                            | месяц
+                            span.current-value месяц
                             span.caret
                         ul.dropdown-menu
-                            li январь
-                            li февраль
-                            li март
-                            li апрель
-                            li май
-                            li июнь
-                            li июль
-                            li август
-                            li сентябрь
-                            li октябрь
-                            li ноябрь
-                            li декабрь
+                            li(data-value=1) январь
+                            li(data-value=2) февраль
+                            li(data-value=3) март
+                            li(data-value=4) апрель
+                            li(data-value=5) май
+                            li(data-value=6) июнь
+                            li(data-value=7) июль
+                            li(data-value=8) август
+                            li(data-value=9) сентябрь
+                            li(data-value=10) октябрь
+                            li(data-value=11) ноябрь
+                            li(data-value=12) декабрь
 
                     .dropdown#year
                         button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
-                            | год
+                            span.current-value год
                             span.caret
                         ul.dropdown-menu
                             - for (var x = 1930; x <= 1990; x++)
-                               li= x
+                               li(data-value=x)= x
 
             label
                 span эл. почта
                 input#email(type='text', placeholder='Введите название эл. почту')
             label
+                span юридическое лицо
+                .dropdown-container
+                    .dropdown#legalEntity
+                        button.btn.btn-gray.dropdown-toggle(type='button', data-toggle='dropdown')
+                            span.current-value юридическое лицо
+                            span.caret
+                        ul.dropdown-menu
+                            li(data-value="private_person") частный предприниматель
+                            li(data-value="individual_entrepreneur") ФОП
+                            li(data-value="limited_liability") ТОП
+            label
                 span загрузить фото
                 span.picture
                     button.btn.btn-default
                         i.glyphicon.glyphicon-camera
-                        input(type="file" onChange="onImageLoad()")
+                        input(type="file" onChange="onImageLoad()" id="avatar")
                     span.img-container
                         img(src="")
                         div.img-background
@@ -62,13 +73,18 @@ include ../common/header
                 span.picture
                     button.btn.btn-default
                         i.glyphicon.glyphicon-list-alt
-                        input(type="file" onChange="onDocumentLoad()")
+                        input(type="file" onChange="onDocumentLoad()" multiple="true" id="documents")
                     span.img-container
                         img(src="")
                         div.img-background
 
             button.btn.btn-default.pull-right(onClick="registerUser()")
                 | Далее »
+
+        form#uploadForm(enctype='multipart/form-data', action='#{BASE_URL}upload', method='post')
+            input(type='file', name='userPhoto')
+            input(type='submit', value='Upload Image', name='submit')
+
 
 include ../common/footer
 
@@ -78,6 +94,21 @@ script.
         var input = event.target;
         var buttonUpload = $(input).parent();
         var image = buttonUpload.siblings('.img-container').find('img');
+
+        $.ajax({
+            method: 'POST',
+            url: '#{BASE_URL}upload',
+            data: JSON.stringify( $('#avatar').get(0).files ),
+            contentType: "application/json; charset=utf-8",
+            success(res){
+                resolve(res);
+            },
+            headers: {
+                auth: '#{token}'
+            },
+            error(response){
+            }
+        });
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -99,6 +130,40 @@ script.
 
     function registerUser() {
 
+        var name = $('#name').val(),
+            birthday = {
+                day: $('#day').find('.current-value').attr('data-value'),
+                month: $('#mounth').find('.current-value').attr('data-value'),
+                year: $('#year').find('.current-value').attr('data-value')
+            },
+            email = $('#email').val(),
+            legal_entity = $('#legalEntity').find('.current-value').attr('data-value'),
+            avatar = $("#avatar").get(0).files,
+            documents = $("#documents").get(0).files
+
+        var data = JSON.stringify({
+            name: name,
+            birthday: birthday,
+            email: email,
+            legal_entity: legal_entity,
+            avatar: avatar,
+            documents: documents
+        });
+        $.ajax({
+            method: 'POST',
+            url: '#{BASE_URL}register',
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            success(res){
+                resolve(res);
+            },
+            headers: {
+                auth: '#{token}'
+            },
+            error(response){
+            }
+        });
+
     }
 
     $( document ).ready( function() {
@@ -107,6 +172,9 @@ script.
         function chooseSelect() {
             var li = event.currentTarget;
             var dropdown = $(li).closest('.dropdown');
-            dropdown.find('button').html($(li).html() + "<span class='caret'></span>");
+            var currentValue = dropdown.find('button').find(".current-value");
+
+            currentValue.html( $(li).html() );
+            currentValue.attr( 'data-value', $(li).attr('data-value') );
         }
     });

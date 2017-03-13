@@ -1,6 +1,5 @@
-import AlertActions from './../common/js/Alert/AlertActions';
+import AlertActions from '../common/js/components/Alert/AlertActions';
 import AuthActions from './src/js/actions/AuthActions';
-import SettingsAction from './src/js/actions/SettingsAction';
 
 /**
  * Обработка серверных ошибок
@@ -25,13 +24,9 @@ export default {
                 }, true);
                 break;
             }
-            case 403: {//тариф не оплачен и действие пробного периода окончено
-                SettingsAction.setIsActive(false);
-                break;
-            }
 
             case 401: {//клиент не залогинен
-                window.location.replace(`http://auth.${(window.location.host).slice(window.location.host.indexOf('.') + 1)}/#/auth`);
+                window.location.replace(`http://${(window.location.origin)}/#/auth`);
             }
 
         }

@@ -35,11 +35,6 @@ gulp.task('js', function(){
     return b.bundle()
         .pipe(source('build.js'))
         .pipe(buffer())
-        //.pipe(uglify({
-        //    output: {
-        //        ascii_only: true
-        //    }
-        //}))
         .pipe(gulp.dest(path.DEST));
 });
 
@@ -84,46 +79,5 @@ gulp.task('sass', function () {
 });
 
 gulp.task('build', ['js', 'res', 'sass', 'vendor', 'replaceHTML']);
-
-//gulp.task('fonts', function () {
-//    return gulp.src('./res/fonts/**/*')
-//        .pipe(gulp.dest(path.DEST + '/fonts'));
-//});
-
-//gulp.task('vendors', function() {
-//    return gulp.src([
-//        './vendor/bootstrap/dist/js/bootstrap.min.js',
-//        './vendor/bootstrap.switch/js/bootstrap-switch.min.js',
-//        './vendor/jquery.float/jquery.float.js',
-//        './vendor/bootstrap.multiselect/js/bootstrap-multiselect.js',
-//        './vendor/jquery.select2/select2.min.js',
-//        './vendor/jquery-ui/jquery-ui.min.js',
-//        './vendor/jquery.easypiechart/jquery.easypiechart.min.js',
-//        './vendor/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js',
-//        './vendor/jquery.gritter/jquery.gritter.min.js',
-//        './vendor/jquery.nanoscroller/javascripts/jquery.nanoscroller.min.js',
-//        './vendor/jquery.niftymodals/js/jquery.modalEffects.js',
-//        './vendor/jquery.icheck/icheck.js',
-//        './vendor/jquery.sparkline/jquery.sparkline.min.js',
-//        './vendor/skycons/skycons.js',
-//        './scripts/*.js'
-//    ])
-//        .pipe(concat('vendor.js'))
-//        .pipe(gulp.dest(path.DEST));
-//});
-
-//gulp.task('express', function() {
-//    var express = require('express');
-//    var path = require('path');
-//    var app = express();
-//
-//    app.use(express.static(__dirname + './../mobile/www'));
-//
-//    app.get('*', function (request, response){
-//        response.sendFile(path.resolve(__dirname, './../mobile/www', 'index.html'))
-//    });
-//
-//    app.listen(8000);
-//});
 
 gulp.task('default', ["watch", 'js', 'sass', 'vendor', 'res', 'replaceHTML']);
