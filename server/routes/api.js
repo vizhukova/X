@@ -5,5 +5,6 @@ var api_prefix = '/api';
 
 router.use(api_prefix, require('./files'));
 router.use(api_prefix, require('./seller'));
+router.use(api_prefix, require('./address'));
 
 module.exports = router;

@@ -64,9 +64,7 @@ var User = bookshelf.Model.extend({
     },
 
     register: Promise.method(function (user) {
-
         var record = new this(user);
-
         return record.save();
     }),
 

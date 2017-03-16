@@ -1,0 +1,47 @@
+.new-address-page {
+  label {
+    width: 100%;
+    input {
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
+}
+
+.addresses-page {
+
+  .add_new_address {
+    margin: 20px 0;
+  }
+
+  .address {
+    background: #fff;
+    border: solid 1px #d6d8da;
+    padding: 20px;
+
+    & > * {
+      margin: 10px 0;
+    }
+
+    .name {
+      span {
+        font-weight: 600;
+        padding: 0 10px;
+      }
+    }
+    .address-data {
+      display: inline-block;
+      vertical-align: top;
+      padding: 0 10px;
+      & > span {
+        display: block;
+      }
+    }
+    .link-block {
+      a {
+        margin: 0 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}

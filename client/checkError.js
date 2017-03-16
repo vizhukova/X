@@ -26,7 +26,7 @@ export default {
             }
 
             case 401: {//клиент не залогинен
-                window.location.replace(`http://${(window.location.origin)}/#/auth`);
+                // window.location.replace(`http://${(window.location.origin)}/#/auth`);
             }
 
         }

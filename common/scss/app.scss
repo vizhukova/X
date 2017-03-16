@@ -65,6 +65,7 @@ b {
 @import 'ui_alert';
 @import 'ui_block';
 @import 'ui_pricing_box';
+@import 'address';
 
 .response-page {
   img {
@@ -76,6 +77,10 @@ b {
 
 input {
   line-height: 44px;
+}
+
+select {
+  height: 44px;
 }
 
 .image-loader {
