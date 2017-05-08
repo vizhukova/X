@@ -1,5 +1,5 @@
 import React from 'react'
-import ApiActions from './../actions/ApiActions'
+import AuthActions from './../actions/AuthActions'
 import PasswordInput from '../../../../common/js/components/PasswordInput';
 import LoginInput from '../../../../common/js/components/LoginInput';
 import Alert from '../../../../common/js/components/Alert/Alert';
@@ -23,17 +23,12 @@ class Register extends React.Component {
             formData: {
                 id_files: [],
                 id_avatars: [],
-                birthday: {
-                    day: (new Date()).getDate(),
-                    month: (new Date()).getMonth() + 1,
-                    year: (new Date()).getFullYear()
-                },
                 legal_entity: 'private_person'
             }
         };
 
         this.onChange = this.onChange.bind(this);
-        this.register = this.register.bind(this);
+        this.submit = this.submit.bind(this);
         this.onFilesChange = this.onFilesChange.bind(this);
         this.onChangeBirthDay = this.onChangeBirthDay.bind(this);
     }
@@ -43,14 +38,30 @@ class Register extends React.Component {
         this.forceUpdate();
     }
 
-    register(e) {
+    componentDidMount() {
+        $(this.birthdayRef).datepicker({
+            startView: "years",
+            viewMode: "days"
+        }).on('changeDate', (e) => {
+            this.onChange({
+                target: {
+                    name: 'birthday',
+                    value: e.date
+                }
+            })
+        });
+    }
+
+    submit(e) {
         e.preventDefault();
         var self = this;
 
-        ApiActions.post('seller/register', this.state.formData)
-            .then(function (data) {
-                location.assign(window.location.origin)
-            })
+        // ApiActions.post('seller/register', this.state.formData)
+        //     .then(function (data) {
+        //         location.assign(window.location.origin)
+        //     })
+
+        AuthActions.register(this.state.formData);
     }
 
     /**
@@ -119,7 +130,7 @@ class Register extends React.Component {
     render() {
         var baseClass = "form-control input-lg";
 
-        return <form onSubmit={this.register} className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        return <form onSubmit={this.submit} className="register-form col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div className="form-group">
                 <LoginInput
                     class={this.state.errors.login ? `${baseClass} invalid` : baseClass}
@@ -139,10 +150,10 @@ class Register extends React.Component {
                        placeholder="Электронная почта"/>
             </div>
             <div className="row">
-                <label>
-                    Юридическое лицо
+                <label className="col-xs-12">
+                    <span className="label">Юридическое лицо</span>
                     <select name="legal_entity"
-                            className="input-lg"
+                            className="input-lg col-md-6"
                             required
                             onChange={this.onChange}
                             value={this.state.formData.legal_entity}>
@@ -153,44 +164,13 @@ class Register extends React.Component {
                 </label>
             </div>
             <div className="row">
-
-                <label>
-                    Day
-                    <select name="day"
-                            className="input-lg"
-                            required
-                            onChange={this.onChangeBirthDay}
-                            value={this.state.formData.birthday.day}>
-                        { Array(31).fill(1).map((item, index) => {
-                            return <option value={index + 1}>{index + 1}</option>
-                        }) }
-                    </select>
-                </label>
-
-                <label>
-                    Month
-                    <select name="month"
-                            className="input-lg"
-                            required
-                            onChange={this.onChangeBirthDay}
-                            value={this.state.formData.birthday.month}>
-                        { Array(12).fill(1).map((item, index) => {
-                            return <option value={index + 1}>{index + 1}</option>
-                        }) }
-                    </select>
-                </label>
-
-                <label>
-                    Year
-                    <select name="year"
-                            className="input-lg"
-                            required
-                            onChange={this.onChangeBirthDay}
-                            value={this.state.formData.birthday.year}>
-                        { Array(150).fill(1).map((item, index) => {
-                            return <option value={index + 1950}>{index + 1950}</option>
-                        }) }
-                    </select>
+                <label className="col-xs-12">
+                    <span className="label">День рождения</span>
+                    <input className="input-lg col-md-6"
+                           ref={ref => this.birthdayRef = ref}
+                           name="birthday"
+                           onChange={this.onChange}
+                           data-provide="datepicker"/>
                 </label>
             </div>
             <div className="row">

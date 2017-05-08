@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multer  =   require('multer');
 
-var FilesController = require('./../controller/Files');
+var FilesController = require('./../controllers/Files');
 
 var urlToFiles = '/public/uploads/';
 

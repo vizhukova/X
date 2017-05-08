@@ -43,9 +43,39 @@ module.exports = {
         })
     },
 
-     get(data){
+     getByIdArr(arr_id){
         return new Promise(function(resolve, reject){
-            return Address.get(data).then(function(data){
+            return Address.getByIdArr(arr_id).then(function(data){
+                resolve(data);
+            }).catch(function(err){
+                reject(err);
+            })
+        })
+    },
+
+     getById(address_id){
+        return new Promise(function(resolve, reject){
+            return Address.getById(address_id).then(function(data){
+                resolve(data);
+            }).catch(function(err){
+                reject(err);
+            })
+        })
+    },
+
+     update(data){
+        return new Promise(function(resolve, reject){
+            return Address.update(data).then(function(data){
+                resolve(data);
+            }).catch(function(err){
+                reject(err);
+            })
+        })
+    },
+
+     remove(address_id){
+        return new Promise(function(resolve, reject){
+            return Address.remove(address_id).then(function(data){
                 resolve(data);
             }).catch(function(err){
                 reject(err);

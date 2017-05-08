@@ -1,5 +1,5 @@
 import alt from '../alt';
-import ApiActions from '../actions/ApiActions';
+import ApiActions from '../../../../common/js/actions/ApiActions';
 
 class AddressActions {
 
@@ -31,8 +31,34 @@ class AddressActions {
         })
     }
 
+    update(data) {
+        return ApiActions.put(`address/${data.id}`, data).then((result) => {
+            return result.data;
+        }).catch((err) => {
+        })
+    }
+
     get() {
         return ApiActions.get(`addresses`).then((result) => {
+            return result.data;
+        }).catch((err) => {
+        })
+    }
+
+    /**
+     * Получение адеса по id
+     * @param address_id
+     * @returns {Promise|Promise.<T>}
+     */
+    getById(address_id) {
+        return ApiActions.get(`addresses/${address_id}`).then((result) => {
+            return result.data;
+        }).catch((err) => {
+        })
+    }
+
+    remove(address_id) {
+        return ApiActions.delete(`address/${address_id}`).then((result) => {
             return result.data;
         }).catch((err) => {
         })

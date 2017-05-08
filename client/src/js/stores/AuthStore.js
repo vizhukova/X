@@ -6,31 +6,34 @@ class AuthStore {
     constructor() {
 
         var ls = localStorage.getItem('store.auth');
-        this.auth = ls ? JSON.parse(ls) : {
-            token: '',
-            id: ''
-        };
+        this.auth = ls ? JSON.parse(ls) : {};
 
         this.user = {};
 
         this.bindListeners({
-            onRegister: AuthActions.REGISTER
+            onRegister: AuthActions.REGISTER,
+            onLogin: AuthActions.LOGIN
         });
     }
 
     onAuth(auth) {
-       this.auth = auth;
-       localStorage.setItem('store.auth', JSON.stringify(auth));
-   }
+        this.auth = auth;
+        localStorage.setItem('store.auth', JSON.stringify(auth));
+    }
 
     onLogOut() {
-       this.auth = {};
-       localStorage.setItem('store.auth', JSON.stringify({}));
-   }
+        this.auth = {};
+        localStorage.setItem('store.auth', JSON.stringify({}));
+    }
 
     onRegister(data) {
-        this.user = data.user;
-        this.onAuth({id: data.user.id, token: data.token});
+        var newUser = Object.assign({}, data.user, {token: data.token});
+        this.onAuth(newUser);
+    }
+
+    onLogin(data) {
+        var newUser = Object.assign({}, data.user, {token: data.token});
+        this.onAuth(newUser);
     }
 
 }

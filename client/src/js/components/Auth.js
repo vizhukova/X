@@ -1,8 +1,6 @@
 import React from 'react'
-import Alert from '../../../../common/js/components/Alert/Alert';
 import PasswordInput from '../../../../common/js/components/PasswordInput';
-import ApiActions from '../actions/ApiActions';
-import AlertActions from '../../../../common/js/components/Alert/AlertActions';
+import AuthActions from '../actions/AuthActions';
 
 /**
  * Компонент формы логина клиента
@@ -16,18 +14,17 @@ class Auth extends React.Component {
             formData: {}
         };
 
-        this.login = this.login.bind(this);
+        this.submit = this.submit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
-    login(e) {
+    submit(e) {
         e.preventDefault();
         var self = this;
 
-        ApiActions.post('seller/login', this.state.formData)
-            .then(function (data) {
+        AuthActions.login(this.state.formData).then(function (data) {
                 location.assign(window.location.origin)
-            })
+            });
     }
 
     onChange(e) {
@@ -53,7 +50,7 @@ class Auth extends React.Component {
 
                     <div className="tab-body boxed">
 
-                        <form role="form" onSubmit={this.login}>
+                        <form role="form" onSubmit={this.submit}>
                             <div className="form-group">
                                 <input type="email" name="email" id="email"
                                        required

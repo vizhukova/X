@@ -53,6 +53,20 @@ var Seller = bookshelf.Model.extend({
                 .catch(err => reject(err))
 
         })
+    },
+
+    getById: function (id) {
+        return new Promise((resolve, reject) => {
+            knex
+                .first()
+                .from('seller')
+                .where('id', '=', id)
+                .then((res) => {
+                    resolve(res)
+                }).catch((err) => {
+                reject(err)
+            })
+        })
     }
 
 });

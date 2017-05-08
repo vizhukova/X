@@ -1,5 +1,4 @@
-import AlertActions from '../common/js/components/Alert/AlertActions';
-import AuthActions from './src/js/actions/AuthActions';
+import AlertActions from './components/Alert/AlertActions';
 
 /**
  * Обработка серверных ошибок
@@ -26,7 +25,7 @@ export default {
             }
 
             case 401: {//клиент не залогинен
-                // window.location.replace(`http://${(window.location.origin)}/#/auth`);
+                window.location.hash = '#/login';
             }
 
         }

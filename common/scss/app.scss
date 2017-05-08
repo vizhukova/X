@@ -1,4 +1,5 @@
-@import './../../node_modules/bootstrap/dist/css/bootstrap.min';
+@import './../../node_modules/bootstrap/dist/css/bootstrap';
+@import './../../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker';
 
 html, body {
   background: #f1f3f6;
@@ -66,6 +67,7 @@ b {
 @import 'ui_block';
 @import 'ui_pricing_box';
 @import 'address';
+@import 'categories';
 
 .response-page {
   img {
@@ -175,5 +177,11 @@ select {
     vertical-align: top;
     padding: 0 10px;
   }
+}
+
+.input-lg {
+  border-radius: 0;
+  border: #d6d1d1 solid 1px;
+  display: block;
 }
 

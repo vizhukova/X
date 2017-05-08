@@ -3,8 +3,8 @@ var jwt = require('jwt-simple');
 var _ = require('underscore');
 var router = express.Router();
 
-var UserController = require('../controller/Seller');
-var SellerDocumentsController = require('../controller/SellerDocuments');
+var UserController = require('../controllers/Seller');
+var SellerDocumentsController = require('../controllers/SellerDocuments');
 
 router.post('/seller/register', function(req, res, next) {
 
@@ -15,7 +15,7 @@ router.post('/seller/register', function(req, res, next) {
     var birthday = req.body.birthday;
 
     var user = {
-        birthday: new Date(birthday.year, birthday.month, birthday.day),
+        birthday: req.body.birthday,
         email: req.body.email,
         legal_entity: req.body.legal_entity,
         name: req.body.name,

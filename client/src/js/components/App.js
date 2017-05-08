@@ -3,7 +3,7 @@ import {RoutingContext, Link} from 'react-router'
 import  AuthActions from '../actions/AuthActions';
 import AuthStore from './../stores/AuthStore';
 import Alert from'../../../../common/js/components/Alert/Alert';
-import _  from 'lodash';
+import AreYouSureModal from'../../../../common/js/components/AreYouSureModal/AreYouSureModal';
 
 /**
  * Основной компонент интерфейса клиента
@@ -13,31 +13,13 @@ class Application extends React.Component {
     constructor() {
         super();
         this.state = {
-            user: {},
+            auth: AuthStore.getState().auth,
             isActiveTariff: true
         };
 
         this.update = this.update.bind(this);
-        this.updateSettings = this.updateSettings.bind(this);
-        this.out = this.out.bind(this);
-    }
 
-    componentDidMount() {
-
-        // AuthActions.check()
-        //     .then(function() {
-        //         AuthActions.getMe();
-        //         SettingsActions.getAllCurrencies();
-        //         SettingsActions.getTariff();
-        //         SettingsActions.getMessages();
-        //         return SettingsActions.getBasicCurrency();
-        //
-        //     });
-        //
-        // SettingsActions.get();
-        //
         AuthStore.listen(this.update);
-        // SettingsStore.listen(this.updateSettings);
     }
 
     componentWillUnmount() {
@@ -45,26 +27,11 @@ class Application extends React.Component {
     }
 
     update(state) {
-        if (state.isOut) {
-            // location.href = `http://${this.state.auth_domain}/#/auth`;
+        if (state.auth) {
+            this.setState({
+                auth: state.auth
+            });
         }
-
-        if (!state.auth) {
-            location.hash = 'login';
-        }
-        _.assign(this.state, state);
-        this.forceUpdate();
-    }
-
-    updateSettings(state) {
-        _.assign(this.state, state);
-        this.setState({});
-    }
-
-    out(e) {
-        e.preventDefault();
-        console.log(this.state);
-        AuthActions.out();
     }
 
     render() {
@@ -84,7 +51,7 @@ class Application extends React.Component {
 
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav">
-                            <li><Link to="/categories" activeClassName="active">Каталог товаров</Link></li>
+                            <li><Link to="/category" activeClassName="active">Каталог товаров</Link></li>
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-haspopup="true" aria-expanded="false">Партнерская программа</a>
@@ -106,12 +73,15 @@ class Application extends React.Component {
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-haspopup="true" aria-expanded="false"><i
-                                    className="glyphicon glyphicon-user"/>{this.state.user.name}</a>
+                                    className="glyphicon glyphicon-user"/>{this.state.auth.name}</a>
 
-                                { this.state.auth
-                                    ? <ul className="dropdown-menu">
+                                { this.state.auth.id
+                                    ? <ul className="dropdown-menu user-dropdown-menu">
                                         <li>
-                                            <a onClick={this.out}>Выход</a>
+                                            <a>Выход</a>
+                                        </li>
+                                        <li>
+                                            <Link to="/addresses">Адреса</Link>
                                         </li>
                                     </ul>
                                     : <ul className="dropdown-menu">
@@ -126,6 +96,7 @@ class Application extends React.Component {
                 </div>
             </nav>
             <Alert />
+            <AreYouSureModal />
             {this.props.children}
         </div>
     }

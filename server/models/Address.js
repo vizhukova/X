@@ -68,7 +68,10 @@ var Address = bookshelf.Model.extend({
             })
     },
 
-    get() {
+    /**
+     * @param {Array} arr_id
+     */
+    getByIdArr(arr_id) {
         return knex('addresses')
             .select([
                 'city.name as city_name',
@@ -79,6 +82,25 @@ var Address = bookshelf.Model.extend({
             .join('city', 'addresses.city_id', 'city.id')
             .join('district', 'addresses.district_id', 'district.id')
             .join('country', 'addresses.country_id', 'country.id')
+            .whereIn('addresses.id', arr_id)
+    },
+
+    getById(address_id) {
+        return knex('addresses')
+            .first()
+            .where({id: address_id})
+    },
+
+    update(data) {
+        return knex('addresses')
+            .update(data)
+            .where({id: data.id})
+    },
+
+    remove(address_id) {
+        return knex('addresses')
+            .del()
+            .where({id: address_id})
     },
 
 });

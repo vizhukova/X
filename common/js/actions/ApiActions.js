@@ -1,20 +1,29 @@
 import React from 'react';
 import $ from 'jquery';
 import Promise from 'bluebird';
+import checkError from './../checkError';
 
-function getDomain(){
+var getDomain = () => {
     return '/api/';
-}
+};
+
+var returnToken = () => {
+    var ls = localStorage.getItem('store.auth');
+    var auth = ls ? JSON.parse(ls) : {};
+    return auth.token || '';
+};
+
 
 /**
-*Отправка запросов на сервер
-*/
+ *Отправка запросов на сервер
+ */
 
-class ApiActions{
+class ApiActions {
 
     static get(path, data) {
 
         var BASE_URL = getDomain();
+
         return new Promise(function (resolve, reject) {
             $.ajax({
 
@@ -25,11 +34,11 @@ class ApiActions{
                 success(res){
                     resolve(res);
                 },
-                //  headers: {
-                //     auth: token
-                // },
+                 headers: {
+                    auth: returnToken()
+                },
                 error(response){
-                    // checkError.check(response);
+                    checkError.check(response);
                     reject(new Error());
                 }
             });
@@ -39,7 +48,6 @@ class ApiActions{
     static post(path, data) {
 
         var BASE_URL = getDomain();
-        // var token = cookie.getCookie('token') || '';
 
         return new Promise(function (resolve, reject) {
             $.ajax({
@@ -52,11 +60,10 @@ class ApiActions{
                     resolve(response);
                 },
                 headers: {
-                    // auth: token
+                    auth: returnToken()
                 },
                 error(response){
-                    // checkError.check(response);
-                    // SettingsActions.getMessages(); // получение ошибки с сервера
+                    checkError.check(response);
                     reject(new Error());
                 }
 
@@ -67,7 +74,6 @@ class ApiActions{
     static put(path, data) {
 
         var BASE_URL = getDomain();
-        // var token = cookie.getCookie('token') || '';
 
         return new Promise(function (resolve, reject) {
             $.ajax({
@@ -77,14 +83,13 @@ class ApiActions{
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 headers: {
-                    // auth: token
+                    auth: returnToken()
                 },
                 success(response){
                     resolve(response);
                 },
                 error(response){
-                    // checkError.check(response);
-                    // SettingsActions.getMessages();// получение ошибки с сервера
+                    checkError.check(response);
                     reject(new Error())
                 }
 
@@ -92,10 +97,9 @@ class ApiActions{
         })
     }
 
-    static remove(path, data) {
+    static delete(path, data) {
 
         var BASE_URL = getDomain();
-        // var token = cookie.getCookie('token') || '';
 
         return new Promise(function (resolve, reject) {
             $.ajax({
@@ -104,14 +108,13 @@ class ApiActions{
                 url: BASE_URL + path,
                 data: data,
                 headers: {
-                    // auth: token
+                    auth: returnToken()
                 },
                 success(response){
                     resolve(response);
                 },
                 error(response){
-                    // checkError.check(response);
-                    // SettingsActions.getMessages();// получение ошибки с сервера
+                    checkError.check(response);
                     reject(new Error())
                 }
 
