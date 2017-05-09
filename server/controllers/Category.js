@@ -25,7 +25,8 @@ module.exports = {
         var newCategory;
         return new Promise(function (resolve, reject) {
             return Category.create({
-                name: data.name
+                name: data.name,
+                seller_id: data.seller_id
             }).then(function (result) {
                 newCategory = result.attributes;
                 if(data.parent_id) {

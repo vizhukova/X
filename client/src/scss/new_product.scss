@@ -1,0 +1,29 @@
+.wholesale-prices-container {
+  background: #fff;
+  padding: 5px 10px 20px;
+  border: 1px solid #D6D1D1;
+  .wholesale-price {
+    position: relative;
+    input[type=number] {
+      width: 100%;
+    }
+    .btn-remove {
+      position: absolute;
+      top: 17px;
+      bottom: 0;
+      margin: auto;
+      height: 42px;
+      text-align: center;
+      right: 15px;
+      width: 41px;
+      padding: 0;
+    }
+  }
+  .btn-add-wholesale-prices {
+    margin-top: 15px;
+    i {
+      margin-left: 10px;
+      margin-top: 11px;
+    }
+  }
+}

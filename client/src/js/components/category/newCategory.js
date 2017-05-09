@@ -65,7 +65,7 @@ class NewCategory extends React.Component {
                     <select name="parent_id"
                             value={this.state.formData.parent_id}
                             onChange={this.onChange}>
-                        <option disabled>Выберите вложенную категорию</option>
+                        <option disabled selected>Выберите вложенную категорию</option>
                         {this.state.categories.map((country, index) => {
                             return <option key={index} value={country.id}>{country.name}</option>
                         })}

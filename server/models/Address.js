@@ -59,6 +59,11 @@ var Address = bookshelf.Model.extend({
             })
     },
 
+    getAllDistricts() {
+        return knex('district')
+            .select()
+    },
+
     getCities(data) {
         return knex('city')
             .select()
@@ -66,6 +71,11 @@ var Address = bookshelf.Model.extend({
                 country_id: data.country_id,
                 district_id: data.district_id
             })
+    },
+
+    getAllCities() {
+        return knex('city')
+            .select()
     },
 
     /**

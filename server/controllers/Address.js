@@ -23,9 +23,29 @@ module.exports = {
         })
     },
 
+    getAllDistricts(){
+        return new Promise(function(resolve, reject){
+            return Address.getAllDistricts().then(function(data){
+                resolve(data);
+            }).catch(function(err){
+                reject(err);
+            })
+        })
+    },
+
     getCities(data){
         return new Promise(function(resolve, reject){
             return Address.getCities(data).then(function(data){
+                resolve(data);
+            }).catch(function(err){
+                reject(err);
+            })
+        })
+    },
+
+    getAllCities(){
+        return new Promise(function(resolve, reject){
+            return Address.getAllCities().then(function(data){
                 resolve(data);
             }).catch(function(err){
                 reject(err);

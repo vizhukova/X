@@ -18,6 +18,7 @@
     "bootstrap-datepicker": "^1.6.4",
     "checkit": "^0.6.0",
     "cookie-parser": "^1.4.1",
+    "drag-drop": "^2.13.2",
     "esdoc": "^0.4.6",
     "esdoc-es7-plugin": "0.0.3",
     "express": "^4.13.3",

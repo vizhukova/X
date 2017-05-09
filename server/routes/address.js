@@ -16,11 +16,18 @@ router.get('/districts', function (req, res, next) {
     var data = {
         country_id: req.query.country
     };
-    AddressController.getDistricts(data).then(data => {
+
+    (() => {
+        if (data.country_id >= 0) {
+            return AddressController.getDistricts(data);
+        } else {
+            return AddressController.getAllDistricts();
+        }
+    })().then(data => {
         res.send({data: data});
     }).catch(err => {
         res.status(400).send(err);
-    })
+    });
 });
 
 router.get('/cities', function (req, res, next) {
@@ -28,7 +35,14 @@ router.get('/cities', function (req, res, next) {
         country_id: req.query.country,
         district_id: req.query.district
     };
-    AddressController.getCities(data).then(data => {
+
+    (() => {
+        if (data.country_id >= 0 && data.district_id >= 0) {
+            return AddressController.getCities(data);
+        } else {
+            return AddressController.getAllCities();
+        }
+    })().then(data => {
         res.send({data: data});
     }).catch(err => {
         res.status(400).send(err);

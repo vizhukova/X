@@ -42,7 +42,11 @@ router.get('/categories', function (req, res, next) {
  * Создание новой категории
  */
 router.post('/categories', function (req, res, next) {
-    CategoryController.create(req.body).then((data) => {
+    CategoryController.create({
+        name: req.body.name,
+        seller_id: req.authUser.id,
+        parent_id: req.body.parent_id
+    }).then((data) => {
         res.send({data: data});
     }).catch((err) => {
         next(err);
