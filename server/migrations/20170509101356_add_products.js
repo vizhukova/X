@@ -6,7 +6,6 @@ exports.up = function(knex, Promise) {
       t.decimal('price').notNullable();
       t.integer('category_id').notNullable().references('id').inTable('categories').onDelete('RESTRICT');
       t.integer('seller_id').notNullable().references('id').inTable('seller').onDelete('RESTRICT');
-      t.string('image');
       t.timestamps();
   });
 };

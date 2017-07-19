@@ -45,7 +45,8 @@ router.post('/categories', function (req, res, next) {
     CategoryController.create({
         name: req.body.name,
         seller_id: req.authUser.id,
-        parent_id: req.body.parent_id
+        parent_id: req.body.parent_id,
+        id: ''
     }).then((data) => {
         res.send({data: data});
     }).catch((err) => {

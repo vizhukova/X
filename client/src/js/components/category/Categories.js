@@ -41,9 +41,12 @@ class Catalog extends React.Component {
 
     render() {
         return <div className="catalog-page">
-            <Link to="/product/new">
-                <button type="button" className="btn btn-default">Добавить товар +</button>
-            </Link>
+            {this.state.categoryId
+                ? <Link to={`/category/${this.state.categoryId}/product/new`}>
+                     <button type="button" className="btn btn-default">Добавить товар +</button>
+                  </Link>
+                : null
+            }
             <Link to="/category/new">
                 <button type="button" className="btn btn-default">Добавить категорию +</button>
             </Link>

@@ -36,9 +36,7 @@ ReactDOM.render((
             <Route path="/category" onLeave={onLeave}>
                 <Route path="new" component={newCategory} onLeave={onLeave}/>
                 <Route path=":id" component={Catalog} onLeave={onLeave}/>
-            </Route>
-            <Route path="/product" onLeave={onLeave}>
-                <Route path="new" component={newProduct} onLeave={onLeave}/>
+                <Route path=":id/product/new" component={newProduct} onLeave={onLeave}/>
             </Route>
         </Route>
     </Router>

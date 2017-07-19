@@ -20,8 +20,7 @@ class CategoryActions {
     create(data) {
         return ApiActions.post(`categories`, data).then((result) => {
             return result.data;
-        }).catch((err) => {
-        })
+        });
     }
 
     get() {

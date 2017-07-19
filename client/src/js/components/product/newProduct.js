@@ -1,5 +1,6 @@
 import React from 'react'
 import AddressActions from '../../actions/AddressActions';
+import ProductActions from '../../actions/ProductActions';
 import DragnDropPictureLoader from '../../../../../common/js/components/DragnDropPictureLoader';
 import AreYouSureModalActions from '../../../../../common/js/components/AreYouSureModal/AreYouSureModalActions';
 
@@ -44,6 +45,9 @@ class NewProduct extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            categoryId: this.props.params.id
+        });
         AddressActions.getCountry().then(countries => {
             this.state.countries = countries;
             this.forceUpdate();
@@ -98,13 +102,13 @@ class NewProduct extends React.Component {
 
     addCountryDelivery(e) {
         e.preventDefault();
-        this.state.countryDelivery = [{price: 0, data: ''}];
+        this.state.countryDelivery = [{price: 0, data: (this.state.countries[0] || {}).id}];
         this.forceUpdate();
     }
 
     addCountryDeliveryNewRaw(e) {
         e.preventDefault();
-        this.state.countryDelivery.push({price: 0, data: 0});
+        this.state.countryDelivery.push({price: 0, data: (this.state.countries[0] || {}).id});
         this.forceUpdate();
     }
 
@@ -124,13 +128,13 @@ class NewProduct extends React.Component {
 
     addDistrictDelivery(e) {
         e.preventDefault();
-        this.state.districtDelivery = [{price: 0, data: ''}];
+        this.state.districtDelivery = [{price: 0, data: (this.state.districts[0] || {}).id}];
         this.forceUpdate();
     }
 
     addDistrictDeliveryNewRaw(e) {
         e.preventDefault();
-        this.state.districtDelivery.push({price: 0, data: 0});
+        this.state.districtDelivery.push({price: 0, data: (this.state.districts[0] || {}).id});
         this.forceUpdate();
     }
 
@@ -150,13 +154,13 @@ class NewProduct extends React.Component {
 
     addCityDelivery(e) {
         e.preventDefault();
-        this.state.cityDelivery = [{price: 0, data: ''}];
+        this.state.cityDelivery = [{price: 0, data: (this.state.cities[0] || {}).id}];
         this.forceUpdate();
     }
 
     addCityDeliveryNewRaw(e) {
         e.preventDefault();
-        this.state.cityDelivery.push({price: 0, data: 0});
+        this.state.cityDelivery.push({price: 0, data: (this.state.cities[0] || {}).id});
         this.forceUpdate();
     }
 
@@ -176,6 +180,20 @@ class NewProduct extends React.Component {
 
     submit(e) {
         e.preventDefault();
+        var dataToSend = Object.assign(
+            {},
+            this.state.formData,
+            {
+                wholesalePrices: this.state.wholesalePrices,
+                countryDelivery: this.state.countryDelivery,
+                districtDelivery: this.state.districtDelivery,
+                cityDelivery: this.state.cityDelivery,
+                images: this.state.images,
+                category_id: this.state.categoryId
+            }
+        );
+
+        ProductActions.create(dataToSend);
     }
 
     onChange(e) {
@@ -324,7 +342,10 @@ class NewProduct extends React.Component {
                 <label>
                     Цена:
                     <div className="input-group">
-                        <input className="form-control" type="text" aria-describedby="basic-addon2"/>
+                        <input className="form-control" type="text" aria-describedby="basic-addon2"
+                               name="price"
+                               value={this.state.formData.price}
+                               onChange={this.onChange} />
                         <span className="input-group-addon" id="basic-addon2">грн</span>
                     </div>
                 </label>
@@ -374,7 +395,7 @@ class NewProduct extends React.Component {
                     }
                 </label>
                 <div className="button-wrapper">
-                    <button className="btn btn-primary">Сохранить</button>
+                    <button className="btn btn-primary" onClick={this.submit}>Сохранить</button>
                     <button className="btn btn-primary" onClick={this.cancel}>Отмена</button>
                 </div>
             </form>

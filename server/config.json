@@ -6,7 +6,7 @@
     "connection": {
       "host"     : "localhost",
       "user"     : "store",
-      "password" : "2580",
+      "password" : "123",
       "database" : "store",
       "charset"  : "utf8"
     },
