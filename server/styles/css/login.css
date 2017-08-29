@@ -1,0 +1,22 @@
+.login-page .container {
+  min-width: 300px;
+  margin-top: 5%; }
+
+.login-page ul.nav {
+  display: inline-block; }
+  .login-page ul.nav li a {
+    color: #ca9a48; }
+  .login-page ul.nav li.active a {
+    color: #4a4747; }
+
+.login-page form {
+  background: #fff;
+  margin-top: -5px;
+  padding: 10px; }
+  .login-page form > * {
+    display: block;
+    margin: 20px auto; }
+  .login-page form label {
+    max-width: 300px; }
+    .login-page form label i {
+      color: #4a4747; }

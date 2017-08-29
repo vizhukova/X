@@ -38,24 +38,9 @@ gulp.task('js', function(){
         .pipe(gulp.dest(path.DEST));
 });
 
-gulp.task('vendor', function(){
-    var b = browserify();
-    b.transform("babelify", {presets: ["es2015", "react"]});
-    b.add(path.VENDOR_ENTRY_POINT);
-    return b.bundle()
-        .pipe(source('vendor.js'))
-        .pipe(buffer())
-        .pipe(uglify({
-            output: {
-                ascii_only: true
-            }
-        }))
-        .pipe(gulp.dest(path.DEST));
-});
-
 gulp.task('watch', function() {
-    gulp.watch('./src/js/**/*.js', ['js', 'vendor']);
-    gulp.watch('./../common/js/*.js', ['js', 'vendor']);
+    gulp.watch('./src/js/**/*.js', ['js']);
+    gulp.watch('./../common/js/*.js', ['js']);
     gulp.watch('./src/scss/**/*.scss', ['sass']);
     gulp.watch('./../common/scss/*.scss', ['sass']);
     gulp.watch('./*.html', ['replaceHTML']);
@@ -78,6 +63,6 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(path.DEST))
 });
 
-gulp.task('build', ['js', 'res', 'sass', 'vendor', 'replaceHTML']);
+gulp.task('build', ['js', 'res', 'sass', 'replaceHTML']);
 
-gulp.task('default', ["watch", 'js', 'sass', 'vendor', 'res', 'replaceHTML']);
+gulp.task('default', ["watch", 'js', 'sass', 'res', 'replaceHTML']);

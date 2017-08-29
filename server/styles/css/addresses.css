@@ -1,0 +1,27 @@
+.address-page .container {
+  text-align: left;
+  padding: 15px 30px;
+  width: 100%; }
+
+.address-page .address {
+  display: inline-block;
+  border: solid 3px #4a4747;
+  padding: 15px;
+  margin: 20px 10px 5px 0;
+  vertical-align: top; }
+  .address-page .address > * {
+    display: block;
+    margin: 5px 0; }
+    .address-page .address > * i {
+      margin-right: 10px; }
+  .address-page .address .name {
+    color: #4a4747;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 10px 0; }
+  .address-page .address .control-panel a {
+    color: #337ab7; }
+    .address-page .address .control-panel a:nth-child(1)::after {
+      content: "|";
+      display: inline-block;
+      margin: 0 10px; }

@@ -2,6 +2,11 @@ import React from 'react'
 import {Link} from 'react-router'
 
 import CategoryActions from '../../actions/CategoryActions'
+import ProductActions from '../../actions/ProductActions'
+import AuthStore from '../../stores/AuthStore'
+import SearchPanel from '../../../../../common/js/components/SearchPanel'
+import AreYouSureModalActions from '../../../../../common/js/components/AreYouSureModal/AreYouSureModalActions'
+import AlertActions from '../../../../../common/js/components/Alert/AlertActions'
 
 class Catalog extends React.Component {
 
@@ -9,8 +14,16 @@ class Catalog extends React.Component {
         super();
         this.state = {
             categoryId: '',
-            categories: []
-        }
+            categories: [],
+            products: [],
+            authUser: AuthStore.getState().auth
+        };
+
+        this.onChangeSearch = this.onChangeSearch.bind(this);
+        this.removeProduct = this.removeProduct.bind(this);
+        this.update = this.update.bind(this);
+
+        AuthStore.listen(this.update);
     }
 
     componentDidMount() {
@@ -31,6 +44,9 @@ class Catalog extends React.Component {
                 CategoryActions.getLevelByParent(nextState.categoryId).then(categories => {
                     this.setState({categories});
                 });
+                ProductActions.getByCategory(nextState.categoryId).then(products => {
+                    this.setState({products});
+                });
             } else {
                 CategoryActions.getFirstLevel().then(categories => {
                     this.setState({categories});
@@ -39,24 +55,113 @@ class Catalog extends React.Component {
         }
     }
 
+    update(state) {
+        if (state.auth) {
+            this.setState({
+                authUser: state.auth
+            });
+        }
+    }
+
+    onChangeSearch(valueToSearch) {
+        if (valueToSearch) {
+            CategoryActions.getByQ(valueToSearch).then(categories => {
+                this.setState({categories});
+            });
+            ProductActions.getByQ(valueToSearch).then(products => {
+                this.setState({products});
+            });
+        } else {
+            if (this.state.categoryId) {
+                CategoryActions.getLevelByParent(this.state.categoryId).then(categories => {
+                    this.setState({categories});
+                });
+                ProductActions.getByCategory(this.state.categoryId).then(products => {
+                    this.setState({products});
+                });
+            } else {
+                CategoryActions.getFirstLevel().then(categories => {
+                    this.setState({categories});
+                });
+                this.setState({products: []});
+            }
+        }
+    }
+
+    removeProduct(product) {
+        AreYouSureModalActions.set({
+            text: `Вы уверенны, что хотите удалить этот "${product.name}"?`,
+            onSuccess: () => {
+                ProductActions.delete(product.id).then(data => {
+                    this.state.products = this.state.products.filter(item => item.id !== product.id);
+                    this.forceUpdate();
+
+                    AlertActions.set({
+                        type: 'success',
+                        title: 'Ура',
+                        text: `"${product.name}" успешно удален`
+                    })
+                }).catch(err => {
+                    AlertActions.set({
+                        type: 'error',
+                        title: 'Ошибка',
+                        text: 'Упс, что-то пошло не так'
+                    })
+                })
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        AuthStore.unlisten(this.update);
+    }
+
     render() {
         return <div className="catalog-page">
             {this.state.categoryId
                 ? <Link to={`/category/${this.state.categoryId}/product/new`}>
-                     <button type="button" className="btn btn-default">Добавить товар +</button>
-                  </Link>
+                <button type="button" className="btn btn-default">Добавить товар +</button>
+            </Link>
                 : null
             }
             <Link to="/category/new">
                 <button type="button" className="btn btn-default">Добавить категорию +</button>
             </Link>
+
+            <SearchPanel onChange={this.onChangeSearch}/>
+
             {this.state.categories.map((item, index) => {
                 return <Link to={`/category/${item.id}`}
                              className="category"
                              key={index}>{item.name}</Link>
             })}
+            {this.state.products.map((item, index) => {
+                return <Link className="row product" key={index}>
+                    <div className="col-xs-2"><img src={item.image} alt=""/></div>
+                    <div className="col-xs-5">{item.name}</div>
+                    <div className="col-xs-3">{item.price} грн.</div>
+                    <div className="col-xs-1">
+                        {this.state.authUser.id === item.seller_id
+                            ? <div className="btn btn-default">
+                            <i className="glyphicon glyphicon-pencil"/>
+                        </div>
+                            : null
+                        }
+                    </div>
+                    <div className="col-xs-1">
+                        {this.state.authUser.id === item.seller_id
+                            ? <div className="btn btn-danger" onClick={() => this.removeProduct(item) }>
+                            <i className="glyphicon glyphicon glyphicon-remove"/>
+                        </div>
+                            : null
+                        }
+                    </div>
+                </Link>
+            })}
         </div>
     }
 }
 
-export default Catalog;
+export
+default
+Catalog;

@@ -1,0 +1,10 @@
+.main-page .container {
+  text-align: left;
+  padding: 15px 30px;
+  width: 100%; }
+
+.new-form-page label {
+  width: 100%; }
+  .new-form-page label input {
+    width: 100%;
+    margin: 10px 0; }

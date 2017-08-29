@@ -31,11 +31,20 @@ router.get('/categories/:id', function (req, res, next) {
  * Получение категорий первого уровня
  */
 router.get('/categories', function (req, res, next) {
-    CategoryController.getHigherestLevel().then((data) => {
-        res.send({data: data});
-    }).catch((err) => {
-        next(err);
-    });
+    var q = req.query.q;
+    if (q) {
+        CategoryController.getByQ(q).then((data) => {
+            res.send({data: data});
+        }).catch((err) => {
+            next(err);
+        });
+    } else {
+        CategoryController.getHigherestLevel().then((data) => {
+            res.send({data: data});
+        }).catch((err) => {
+            next(err);
+        });
+    }
 });
 
 /**

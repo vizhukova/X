@@ -9,7 +9,6 @@ class AuthActions {
         return function (dispatch) {
             return ApiActions.post(`seller/login`, data).then((result) => {
                 dispatch(result);
-            }).catch(err => {
             })
         };
     }
@@ -20,7 +19,6 @@ class AuthActions {
             return ApiActions.post(`seller/register`, data).then((result) => {
                 dispatch(result);
                 return result;
-            }).catch((err) => {
             })
         }
     }

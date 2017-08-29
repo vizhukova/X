@@ -26,5 +26,45 @@ module.exports = {
                 reject(err);
             })
         })
+    },
+
+    getByCategory(categoryId) {
+        return new Promise((resolve, reject) => {
+            Product.getByCategory(categoryId).then(function (data) {
+                resolve(data);
+            }).catch(function (err) {
+                reject(err);
+            })
+        })
+    },
+
+    getByQ(q) {
+        return new Promise((resolve, reject) => {
+            Product.getByQ(q).then(function (data) {
+                resolve(data);
+            }).catch(function (err) {
+                reject(err);
+            })
+        })
+    },
+
+    getById(id) {
+        return new Promise((resolve, reject) => {
+            Product.getById(id).then(function (data) {
+                resolve(data);
+            }).catch(function (err) {
+                reject(err);
+            })
+        })
+    },
+
+    delete(id) {
+        return new Promise((resolve, reject) => {
+            Product.delete(id).then(function (data) {
+                resolve(data);
+            }).catch(function (err) {
+                reject(err);
+            })
+        })
     }
 };

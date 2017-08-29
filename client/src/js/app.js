@@ -12,6 +12,7 @@ import Addresses from './components/addresses/Addresses';
 import Catalog from './components/category/Categories';
 import newCategory from './components/category/newCategory';
 import newProduct from './components/product/newProduct';
+import Product from './components/product/Product';
 
 function onLeave() {
     AlertActions.onLeave();
@@ -37,6 +38,7 @@ ReactDOM.render((
                 <Route path="new" component={newCategory} onLeave={onLeave}/>
                 <Route path=":id" component={Catalog} onLeave={onLeave}/>
                 <Route path=":id/product/new" component={newProduct} onLeave={onLeave}/>
+                <Route path=":id/product/:product_id" component={Product} onLeave={onLeave}/>
             </Route>
         </Route>
     </Router>

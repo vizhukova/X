@@ -61,6 +61,13 @@ var Category = bookshelf.Model.extend({
         return knex
             .select('*')
             .from('categories')
+    },
+
+    getByQ(q) {
+        return knex('categories')
+            .where(
+                knex.raw(`LOWER(name) LIKE LOWER('%${q}%')`)
+            )
     }
 
 });

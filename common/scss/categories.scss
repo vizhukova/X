@@ -7,3 +7,30 @@
   padding: 10px;
   margin: 10px 0;
 }
+
+.product {
+  padding: 10px 0;
+  display: block;
+  border-bottom: solid 1px #76787b;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 0;
+  }
+}
+
+.search-panel {
+  margin: 10px 0 50px;
+  .input-group-addon {
+    background: #0275d8;
+    color: #fff;
+    span {
+      margin-left: 5px;
+    }
+  }
+}

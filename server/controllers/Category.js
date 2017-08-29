@@ -12,6 +12,15 @@ module.exports = {
             })
         })
     },
+    getByQ(q){
+        return new Promise(function (resolve, reject) {
+            return Category.getByQ(q).then(function (data) {
+                resolve(data);
+            }).catch(function (err) {
+                reject(err);
+            })
+        })
+    },
     getByParentId(parent_id){
         return new Promise(function (resolve, reject) {
             return Category.getByParentId(parent_id).then(function (data) {

@@ -1,0 +1,131 @@
+.add-product-page .container {
+  text-align: left;
+  padding: 15px 30px;
+  width: 100%; }
+
+.add-product-page label {
+  display: block;
+  border: none;
+  margin: 25px 0; }
+  .add-product-page label > * {
+    display: inline-block;
+    vertical-align: middle; }
+    .add-product-page label > *:nth-child(1) {
+      color: #4a4747;
+      font-size: 14px;
+      width: 200px;
+      text-align: right;
+      padding-right: 10px; }
+    .add-product-page label > *:nth-child(2) {
+      width: calc(100% - 200px); }
+    .add-product-page label > *.video-label {
+      vertical-align: top; }
+  .add-product-page label input[type="text"] {
+    border-bottom: solid 1px darkgrey;
+    background: white; }
+  .add-product-page label .add-btn i.glyphicon-plus {
+    font-size: 12px;
+    margin-left: 10px; }
+
+.add-product-page .add-price-block .add-price-line, .add-product-page .add-price-block .add-delivery-line, .add-product-page .add-delivery-block .add-price-line, .add-product-page .add-delivery-block .add-delivery-line {
+  margin: 10px 0; }
+  .add-product-page .add-price-block .add-price-line > *, .add-product-page .add-price-block .add-delivery-line > *, .add-product-page .add-delivery-block .add-price-line > *, .add-product-page .add-delivery-block .add-delivery-line > * {
+    margin-right: 10px; }
+  .add-product-page .add-price-block .add-price-line input[type="text"], .add-product-page .add-price-block .add-delivery-line input[type="text"], .add-product-page .add-delivery-block .add-price-line input[type="text"], .add-product-page .add-delivery-block .add-delivery-line input[type="text"] {
+    background-color: #fff; }
+
+.add-product-page .col-input {
+  width: 20% !important;
+  display: inline-block; }
+
+.add-product-page .col-button {
+  width: 10% !important;
+  display: inline-block; }
+
+.add-product-page .picture {
+  margin: 10px 20px 0 0;
+  display: inline-block;
+  vertical-align: top; }
+  .add-product-page .picture .btn {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    overflow: hidden; }
+    .add-product-page .picture .btn i.glyphicon-camera {
+      font-size: 24px; }
+    .add-product-page .picture .btn input[type="file"] {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100%; }
+  .add-product-page .picture .img-container {
+    position: relative;
+    display: inline-block; }
+    .add-product-page .picture .img-container:hover .img-background {
+      opacity: 0.8; }
+    .add-product-page .picture .img-container .img-background {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #ca9a48;
+      opacity: 0; }
+      .add-product-page .picture .img-container .img-background::after {
+        content: "X";
+        color: #fff;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 12px;
+        height: 18px;
+        font-size: 18px; }
+  .add-product-page .picture img {
+    max-width: 100px;
+    max-height: 100px; }
+
+.add-product-page .video-container {
+  text-align: center; }
+  .add-product-page .video-container input[type="text"] {
+    width: 100%; }
+  .add-product-page .video-container .iframe-container {
+    display: inline-block;
+    position: relative; }
+    .add-product-page .video-container .iframe-container iframe {
+      width: 365px;
+      max-width: 100%;
+      height: 170px;
+      margin: 20px auto;
+      display: block;
+      background: transparent;
+      border: solid 1px #d8d3d3;
+      position: relative;
+      z-index: 3; }
+    .add-product-page .video-container .iframe-container .iframe-background {
+      background: #e6e6e6;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2; }
+      .add-product-page .video-container .iframe-container .iframe-background::after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+        border-left: 30px solid #a09d9d;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto; }

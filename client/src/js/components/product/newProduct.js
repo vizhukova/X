@@ -3,6 +3,7 @@ import AddressActions from '../../actions/AddressActions';
 import ProductActions from '../../actions/ProductActions';
 import DragnDropPictureLoader from '../../../../../common/js/components/DragnDropPictureLoader';
 import AreYouSureModalActions from '../../../../../common/js/components/AreYouSureModal/AreYouSureModalActions';
+import AlertActions from '../../../../../common/js/components/Alert/AlertActions';
 
 class NewProduct extends React.Component {
 
@@ -193,7 +194,22 @@ class NewProduct extends React.Component {
             }
         );
 
-        ProductActions.create(dataToSend);
+        ProductActions.create(dataToSend).then(data => {
+            AlertActions.set({
+                type: 'success',
+                title: 'Ура',
+                text: `"${this.state.formData.name}" был успешно создан`
+            });
+
+            this.context.router.push(`/category/${this.state.categoryId}`);
+
+        }).catch(err => {
+            AlertActions.set({
+                type: 'error',
+                title: 'Ошибка',
+                text: 'Упс, что-то пошло не так'
+            })
+        });
     }
 
     onChange(e) {
@@ -345,7 +361,7 @@ class NewProduct extends React.Component {
                         <input className="form-control" type="text" aria-describedby="basic-addon2"
                                name="price"
                                value={this.state.formData.price}
-                               onChange={this.onChange} />
+                               onChange={this.onChange}/>
                         <span className="input-group-addon" id="basic-addon2">грн</span>
                     </div>
                 </label>

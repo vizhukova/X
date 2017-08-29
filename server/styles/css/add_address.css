@@ -1,0 +1,47 @@
+.add-address-page .container {
+  text-align: right;
+  padding: 15px 30px;
+  width: 100%; }
+
+.add-address-page label {
+  display: block;
+  border: none;
+  margin: 25px 0; }
+  .add-address-page label > * {
+    display: inline-block; }
+    .add-address-page label > *:nth-child(1) {
+      color: #4a4747;
+      font-size: 14px;
+      width: 200px;
+      text-align: right; }
+    .add-address-page label > *:nth-child(2) {
+      width: calc(100% - 200px); }
+      .add-address-page label > *:nth-child(2).dropdown {
+        text-align: left; }
+      .add-address-page label > *:nth-child(2).button-container {
+        text-align: left; }
+        .add-address-page label > *:nth-child(2).button-container button {
+          margin-right: 20px; }
+  .add-address-page label input[type="text"] {
+    border-bottom: solid 1px darkgrey;
+    background: white; }
+  .add-address-page label input[type="number"] {
+    margin-left: 10px; }
+  .add-address-page label .add-btn i.glyphicon-plus {
+    font-size: 12px;
+    margin-left: 10px; }
+
+.add-address-page .add-price-block .add-price-line, .add-address-page .add-price-block .add-delivery-line, .add-address-page .add-delivery-block .add-price-line, .add-address-page .add-delivery-block .add-delivery-line {
+  margin: 10px 0; }
+  .add-address-page .add-price-block .add-price-line > *, .add-address-page .add-price-block .add-delivery-line > *, .add-address-page .add-delivery-block .add-price-line > *, .add-address-page .add-delivery-block .add-delivery-line > * {
+    margin-right: 10px; }
+  .add-address-page .add-price-block .add-price-line input[type="text"], .add-address-page .add-price-block .add-delivery-line input[type="text"], .add-address-page .add-delivery-block .add-price-line input[type="text"], .add-address-page .add-delivery-block .add-delivery-line input[type="text"] {
+    background-color: #fff; }
+
+.add-address-page .col-input {
+  width: 20% !important;
+  display: inline-block; }
+
+.add-address-page .col-button {
+  width: 10% !important;
+  display: inline-block; }
