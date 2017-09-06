@@ -56,6 +56,10 @@
   @include button-color(#c9302c);
 }
 
+.btn-secondary{
+  @include button-color(#868e96);
+}
+
 .btn .text {
   color: #fff;
 }

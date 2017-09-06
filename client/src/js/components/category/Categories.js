@@ -21,6 +21,7 @@ class Catalog extends React.Component {
 
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.removeProduct = this.removeProduct.bind(this);
+        this.goToEdit = this.goToEdit.bind(this);
         this.update = this.update.bind(this);
 
         AuthStore.listen(this.update);
@@ -88,7 +89,9 @@ class Catalog extends React.Component {
         }
     }
 
-    removeProduct(product) {
+    removeProduct(e, product) {
+        e.preventDefault();
+
         AreYouSureModalActions.set({
             text: `Вы уверенны, что хотите удалить этот "${product.name}"?`,
             onSuccess: () => {
@@ -110,6 +113,11 @@ class Catalog extends React.Component {
                 })
             }
         });
+    }
+
+    goToEdit(e, item) {
+        e.preventDefault();
+        this.context.router.push(`/category/${item.category_id}/product/edit/${item.id}`);
     }
 
     componentWillUnmount() {
@@ -136,13 +144,14 @@ class Catalog extends React.Component {
                              key={index}>{item.name}</Link>
             })}
             {this.state.products.map((item, index) => {
-                return <Link className="row product" key={index}>
-                    <div className="col-xs-2"><img src={item.image} alt=""/></div>
+                return <Link className="row product" to={`/category/${item.id}/product/${item.id}`} key={index}>
+                    <div className="col-xs-2"><img src={item.main_image} alt=""/></div>
                     <div className="col-xs-5">{item.name}</div>
                     <div className="col-xs-3">{item.price} грн.</div>
                     <div className="col-xs-1">
                         {this.state.authUser.id === item.seller_id
-                            ? <div className="btn btn-default">
+                            ? <div className="btn btn-default btn-action"
+                                   onClick={(e) => this.goToEdit(e, item)}>
                             <i className="glyphicon glyphicon-pencil"/>
                         </div>
                             : null
@@ -150,7 +159,8 @@ class Catalog extends React.Component {
                     </div>
                     <div className="col-xs-1">
                         {this.state.authUser.id === item.seller_id
-                            ? <div className="btn btn-danger" onClick={() => this.removeProduct(item) }>
+                            ? <div className="btn btn-danger btn-action"
+                                   onClick={(e) => this.removeProduct(e, item) }>
                             <i className="glyphicon glyphicon glyphicon-remove"/>
                         </div>
                             : null
@@ -162,6 +172,8 @@ class Catalog extends React.Component {
     }
 }
 
-export
-default
-Catalog;
+Catalog.contextTypes = {
+    router: React.PropTypes.object
+};
+
+export default Catalog;

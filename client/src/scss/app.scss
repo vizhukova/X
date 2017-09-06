@@ -2,8 +2,14 @@
 @import './../../../node_modules/swiper/dist/css/swiper';
 @import './new_product';
 
+.dropdown-menu {
+  opacity: 0;
+  z-index: -1;
+  display: block;
+}
+
 .btn-submit {
-    margin: 15px;
+  margin: 15px;
 }
 
 .product-form {
@@ -15,6 +21,52 @@
 }
 
 .profile-form {
-  z-index: 10!important;
+  z-index: 10 !important;
+}
+
+.product-page {
+  background: #fff;
+  margin: 0 0;
+  padding: 25px 0;
+
+  .swiper-container {
+    border: solid 1px #007aff;
+    .swiper-slide {
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+
+  .title {
+    font-size: 19px;
+    color: #3c3c94;
+    text-align: center;
+  }
+
+  .price {
+    color: #ea0c0c;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: right;
+    padding: 15px;
+  }
+
+  .block-data {
+    margin: 15px 0;
+    .label-text {
+      padding: 0;
+    }
+  }
+
+  .label-text {
+    font-weight: 600;
+  }
+
+  .btn {
+    padding: 0 5px;
+    line-height: 20px;
+    font-size: 12px;
+  }
 }
 

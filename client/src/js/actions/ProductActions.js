@@ -9,6 +9,12 @@ class ProductActions {
         });
     }
 
+    update(data) {
+        return ApiActions.put(`product/${data.id}`, data).then((result) => {
+            return result.data;
+        });
+    }
+
     getByCategory(categoryId) {
         return ApiActions.get(`product/category/${categoryId}`).then((result) => {
             return result.data;

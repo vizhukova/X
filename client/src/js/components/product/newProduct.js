@@ -1,6 +1,7 @@
 import React from 'react'
 import AddressActions from '../../actions/AddressActions';
 import ProductActions from '../../actions/ProductActions';
+import BrandActions from '../../actions/BrandActions';
 import DragnDropPictureLoader from '../../../../../common/js/components/DragnDropPictureLoader';
 import AreYouSureModalActions from '../../../../../common/js/components/AreYouSureModal/AreYouSureModalActions';
 import AlertActions from '../../../../../common/js/components/Alert/AlertActions';
@@ -10,57 +11,106 @@ class NewProduct extends React.Component {
     constructor() {
         super();
         this.state = {
-            countries: [],
             districts: [],
             cities: [],
-            images: [],
             formData: {},
+
+            brand_name: "",
+            brand: {},
+
+            images: [],
+            brands: [],
             wholesalePrices: [],
-            countryDelivery: [],
             districtDelivery: [],
-            cityDelivery: []
+            cityDelivery: [],
+            districtShipmentDelay: [],
+            cityShipmentDelay: [],
+
+            removedImages: [],
+            removedWholesalePrices: [],
+            removedDistrictDelivery: [],
+            removedCityDelivery: [],
+            removedDistrictShipmentDelay: [],
+            removedCityShipmentDelay: []
         };
         this.addWholesalePrices = this.addWholesalePrices.bind(this);
-        this.addCountryDelivery = this.addCountryDelivery.bind(this);
         this.addDistrictDelivery = this.addDistrictDelivery.bind(this);
         this.addCityDelivery = this.addCityDelivery.bind(this);
+        this.addDistrictShipmentDelay = this.addDistrictShipmentDelay.bind(this);
+        this.addCityShipmentDelay = this.addCityShipmentDelay.bind(this);
 
         this.removeWholesalePricesNewRaw = this.removeWholesalePricesNewRaw.bind(this);
-        this.removeCountryDeliveryNewRaw = this.removeCountryDeliveryNewRaw.bind(this);
         this.removeDistrictDeliveryNewRaw = this.removeDistrictDeliveryNewRaw.bind(this);
         this.removeCityDeliveryNewRaw = this.removeCityDeliveryNewRaw.bind(this);
+        this.removeDistrictShipmentDelayNewRaw = this.removeDistrictShipmentDelayNewRaw.bind(this);
+        this.removeCityShipmentDelayNewRaw = this.removeCityShipmentDelayNewRaw.bind(this);
 
         this.wholesalePricesChange = this.wholesalePricesChange.bind(this);
-        this.onCountryDeliveryChange = this.onCountryDeliveryChange.bind(this);
         this.onDistrictDeliveryChange = this.onDistrictDeliveryChange.bind(this);
         this.onCityDeliveryChange = this.onCityDeliveryChange.bind(this);
+        this.onDistrictShipmentDelayChange = this.onDistrictShipmentDelayChange.bind(this);
+        this.onCityShipmentDelayChange = this.onCityShipmentDelayChange.bind(this);
 
         this.addWholesalePricesNewRaw = this.addWholesalePricesNewRaw.bind(this);
-        this.addCountryDeliveryNewRaw = this.addCountryDeliveryNewRaw.bind(this);
         this.addDistrictDeliveryNewRaw = this.addDistrictDeliveryNewRaw.bind(this);
         this.addCityDeliveryNewRaw = this.addCityDeliveryNewRaw.bind(this);
+        this.addDistrictShipmentDelayNewRaw = this.addDistrictShipmentDelayNewRaw.bind(this);
+        this.addCityShipmentDelayNewRaw = this.addCityShipmentDelayNewRaw.bind(this);
 
         this.onFilesChange = this.onFilesChange.bind(this);
+        this.onDeleteImage = this.onDeleteImage.bind(this);
+        this.chooseBrand = this.chooseBrand.bind(this);
         this.submit = this.submit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         this.setState({
-            categoryId: this.props.params.id
+            categoryId: this.props.params.id,
+            productId: this.props.params.product_id
         });
-        AddressActions.getCountry().then(countries => {
-            this.state.countries = countries;
+        BrandActions.getAll().then(brands => {
+            this.state.brands = brands;
             this.forceUpdate();
         });
         AddressActions.getDistricts().then(districts => {
             this.state.districts = districts;
-            this.forceUpdate(this.updateCities);
+            this.forceUpdate();
         });
         AddressActions.getCities().then(cities => {
             this.state.cities = cities;
             this.forceUpdate();
         });
+
+        if (this.props.params.product_id) {
+            ProductActions.getById(this.props.params.product_id).then(product => {
+                this.state.formData = {
+                    name: product.name,
+                    description: product.description,
+                    price: product.price
+                };
+
+                this.state.brand_name = product.brand.name;
+                if (product.brand.id) {
+                    this.state.brand = product.brand;
+                }
+
+                this.state.images = product.images.map(src => {
+                    return {path: src, origin: true}
+                });
+                this.state.wholesalePrices = product.wholesalePrices.map(data => {
+                    return {product_id: data.product_id, price: data.price, count: data.count, origin: true}
+                });
+                this.state.districtDelivery = product.districtDelivery.map(district => {
+                    return {data: district.district_id, price: district.price, origin: true}
+                });
+                this.state.cityDelivery = product.cityDelivery.map(city => {
+                    return {data: city.city_id, price: city.price, origin: true}
+                });
+                this.forceUpdate();
+            });
+        }
+
     }
 
     onFilesChange(fieldName) {
@@ -68,6 +118,20 @@ class NewProduct extends React.Component {
             this.state[fieldName] = newFiles;
             this.forceUpdate();
         };
+    }
+
+    onDeleteImage(removedImage) {
+        if (removedImage && removedImage.origin) {
+            this.state.removedImages.push(removedImage);
+        }
+    }
+
+    chooseBrand(e, brand) {
+        e.preventDefault();
+        this.setState({
+            brand: brand,
+            brand_name: brand.name
+        });
     }
 
     /////////////////////////// работа с оптовыми ценами////////////////////////////////////
@@ -89,6 +153,10 @@ class NewProduct extends React.Component {
 
     removeWholesalePricesNewRaw(e, del_index) {
         e.preventDefault();
+        var removedItem = this.state.wholesalePrices[del_index];
+        if (removedItem && removedItem.origin) {
+            this.state.removedWholesalePrices.push(removedItem);
+        }
         this.state.wholesalePrices = this.state.wholesalePrices.filter((item, index) => index != del_index);
         this.forceUpdate();
     }
@@ -96,32 +164,6 @@ class NewProduct extends React.Component {
     wholesalePricesChange(e, index) {
         var target = e.target;
         this.state.wholesalePrices[index][target.name] = target.value;
-        this.forceUpdate();
-    }
-
-    /////////////////////////// работа с доставкой по странам////////////////////////////////////
-
-    addCountryDelivery(e) {
-        e.preventDefault();
-        this.state.countryDelivery = [{price: 0, data: (this.state.countries[0] || {}).id}];
-        this.forceUpdate();
-    }
-
-    addCountryDeliveryNewRaw(e) {
-        e.preventDefault();
-        this.state.countryDelivery.push({price: 0, data: (this.state.countries[0] || {}).id});
-        this.forceUpdate();
-    }
-
-    removeCountryDeliveryNewRaw(e, del_index) {
-        e.preventDefault();
-        this.state.countryDelivery = this.state.countryDelivery.filter((item, index) => index != del_index);
-        this.forceUpdate();
-    }
-
-    onCountryDeliveryChange(e, index) {
-        var target = e.target;
-        this.state.countryDelivery[index][target.name] = target.value;
         this.forceUpdate();
     }
 
@@ -141,6 +183,10 @@ class NewProduct extends React.Component {
 
     removeDistrictDeliveryNewRaw(e, del_index) {
         e.preventDefault();
+        var removedItem = this.state.districtDelivery[del_index];
+        if (removedItem && removedItem.origin) {
+            this.state.removedDistrictDelivery.push(removedItem);
+        }
         this.state.districtDelivery = this.state.districtDelivery.filter((item, index) => index != del_index);
         this.forceUpdate();
     }
@@ -167,6 +213,10 @@ class NewProduct extends React.Component {
 
     removeCityDeliveryNewRaw(e, del_index) {
         e.preventDefault();
+        var removedItem = this.state.cityDelivery[del_index];
+        if (removedItem && removedItem.origin) {
+            this.state.removedCityDelivery.push(removedItem);
+        }
         this.state.cityDelivery = this.state.cityDelivery.filter((item, index) => index != del_index);
         this.forceUpdate();
     }
@@ -177,51 +227,177 @@ class NewProduct extends React.Component {
         this.forceUpdate();
     }
 
+    /////////////////////////// работа с отложенной доставкой по регионам////////////////////////////////////
+
+    addDistrictShipmentDelay(e) {
+        e.preventDefault();
+        this.state.districtShipmentDelay = [{days: 1, data: (this.state.districts[0] || {}).id}];
+        this.forceUpdate();
+    }
+
+    addDistrictShipmentDelayNewRaw(e) {
+        e.preventDefault();
+        this.state.districtShipmentDelay.push({days: 1, data: (this.state.districts[0] || {}).id});
+        this.forceUpdate();
+    }
+
+    removeDistrictShipmentDelayNewRaw(e, del_index) {
+        e.preventDefault();
+        var removedItem = this.state.districtShipmentDelay[del_index];
+        if (removedItem && removedItem.origin) {
+            this.state.removedDistrictShipmentDelay.push(removedItem);
+        }
+        this.state.districtShipmentDelay = this.state.districtShipmentDelay.filter((item, index) => index != del_index);
+        this.forceUpdate();
+    }
+
+    onDistrictShipmentDelayChange(e, index) {
+        var target = e.target;
+        this.state.districtShipmentDelay[index][target.name] = target.value;
+        this.forceUpdate();
+    }
+
+    /////////////////////////// работа с отложенной доставкой по городам////////////////////////////////////
+
+    addCityShipmentDelay(e) {
+        e.preventDefault();
+        this.state.cityShipmentDelay = [{days: 1, data: (this.state.cities[0] || {}).id}];
+        this.forceUpdate();
+    }
+
+    addCityShipmentDelayNewRaw(e) {
+        e.preventDefault();
+        this.state.cityShipmentDelay.push({days: 1, data: (this.state.cities[0] || {}).id});
+        this.forceUpdate();
+    }
+
+    removeCityShipmentDelayNewRaw(e, del_index) {
+        e.preventDefault();
+        var removedItem = this.state.cityShipmentDelay[del_index];
+        if (removedItem && removedItem.origin) {
+            this.state.removedCityShipmentDelay.push(removedItem);
+        }
+        this.state.cityShipmentDelay = this.state.cityShipmentDelay.filter((item, index) => index != del_index);
+        this.forceUpdate();
+    }
+
+    onCityShipmentDelayChange(e, index) {
+        var target = e.target;
+        this.state.cityShipmentDelay[index][target.name] = target.value;
+        this.forceUpdate();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////
 
     submit(e) {
         e.preventDefault();
-        var dataToSend = Object.assign(
-            {},
-            this.state.formData,
-            {
-                wholesalePrices: this.state.wholesalePrices,
-                countryDelivery: this.state.countryDelivery,
-                districtDelivery: this.state.districtDelivery,
-                cityDelivery: this.state.cityDelivery,
-                images: this.state.images,
-                category_id: this.state.categoryId
-            }
-        );
+        var brand;
+        if (this.state.brand.name === this.state.brand_name) {
+            brand = this.state.brand;
+        } else {
+            brand = {name: this.state.brand_name};
+        }
 
-        ProductActions.create(dataToSend).then(data => {
-            AlertActions.set({
-                type: 'success',
-                title: 'Ура',
-                text: `"${this.state.formData.name}" был успешно создан`
+        //Если это редактирование
+        if (this.state.productId) {
+
+            var dataToSend = Object.assign(
+                {},
+                this.state.formData,
+                {
+                    id: this.state.productId,
+                    main_image: (this.state.images[0] || {}).path,
+                    brand: brand,
+
+                    newWholesalePrices: this.state.wholesalePrices.filter(data => !data.origin),
+                    removedWholesalePrices: this.state.removedWholesalePrices,
+
+                    newDistrictDelivery: this.state.districtDelivery.filter(data => !data.origin),
+                    removedDistrictDelivery: this.state.removedDistrictDelivery,
+
+                    newCityDelivery: this.state.cityDelivery.filter(data => !data.origin),
+                    removedCityDelivery: this.state.removedCityDelivery,
+
+                    newImages: this.state.images.filter(data => !data.origin),
+                    removedImages: this.state.removedImages,
+
+                    category_id: this.state.categoryId
+                }
+            );
+
+            ProductActions.update(dataToSend).then(data => {
+                AlertActions.set({
+                    type: 'success',
+                    title: 'Ура',
+                    text: `"${this.state.formData.name}" был успешно отредактирован`
+                });
+
+                this.context.router.push(`/category/${this.state.categoryId}`);
+
+            }).catch(err => {
+                AlertActions.set({
+                    type: 'error',
+                    title: 'Ошибка',
+                    text: 'Упс, что-то пошло не так'
+                })
             });
+        } else {//Если это создание нового
 
-            this.context.router.push(`/category/${this.state.categoryId}`);
+            var dataToSend = Object.assign(
+                {},
+                this.state.formData,
+                {
+                    brand: brand,
+                    main_image: (this.state.images[0] || {}).path,
+                    wholesalePrices: this.state.wholesalePrices,
+                    districtDelivery: this.state.districtDelivery,
+                    cityDelivery: this.state.cityDelivery,
+                    images: this.state.images,
+                    category_id: this.state.categoryId
+                }
+            );
 
-        }).catch(err => {
-            AlertActions.set({
-                type: 'error',
-                title: 'Ошибка',
-                text: 'Упс, что-то пошло не так'
-            })
-        });
+            ProductActions.create(dataToSend).then(data => {
+                AlertActions.set({
+                    type: 'success',
+                    title: 'Ура',
+                    text: `"${this.state.formData.name}" был успешно создан`
+                });
+
+                this.context.router.push(`/category/${this.state.categoryId}`);
+
+            }).catch(err => {
+                AlertActions.set({
+                    type: 'error',
+                    title: 'Ошибка',
+                    text: 'Упс, что-то пошло не так'
+                })
+            });
+        }
+
     }
 
     onChange(e) {
         var target = e.target;
-        this.state.formData[target.name] = target.value;
-        this.forceUpdate();
+
+        if (target.name === 'brand_name') {
+            this.state[target.name] = target.value;
+            this.forceUpdate();
+            BrandActions.getByQ(target.value).then(brands => {
+                this.setState({brands});
+            })
+        } else {
+            this.state.formData[target.name] = target.value;
+            this.forceUpdate();
+        }
     }
 
     componentWillUnmount() {
     }
 
     render() {
+
+        console.log(this.state);
 
         var showWholesalePrices = () => {
             return <div className="wholesale-prices-container">
@@ -278,13 +454,13 @@ class NewProduct extends React.Component {
                 { data.mainDataArray.map((item, index) => {
                     return <div className="row wholesale-price">
                         <div className="col-xs-5">
-                            <span className="title">Цена:</span>
+                            <span className="title">{data.prop.label}:</span>
                             <div className="input-group">
                                 <input className="form-control" type="text" aria-describedby="basic-addon2"
-                                       name="price"
-                                       value={item.price}
+                                       name={data.prop.name}
+                                       value={item[data.prop.name]}
                                        onChange={(e) => data.onChange(e, index)}/>
-                                <span className="input-group-addon" id="basic-addon2">грн</span>
+                                <span className="input-group-addon" id="basic-addon2">{data.prop.addon}</span>
                             </div>
                         </div>
                         <div className="col-xs-5">
@@ -293,8 +469,8 @@ class NewProduct extends React.Component {
                                     name="data"
                                     value={item.data}
                                     onChange={(e) => data.onChange(e, index)}>
-                                {data.selectDataArray.map((country, index) => {
-                                    return <option key={index} value={country.id}>{country.name}</option>
+                                {data.selectDataArray.map((data, index) => {
+                                    return <option key={index} value={data.id}>{data.name}</option>
                                 })}
                             </select>
                         </div>
@@ -311,16 +487,6 @@ class NewProduct extends React.Component {
             </div>
         };
 
-        var showCountryDelivery = () => showDataWithSelectTemplate({
-            mainTitle: 'Доставка по странам',
-            selectTitle: 'Страна',
-            selectDataArray: this.state.countries,
-            mainDataArray: this.state.countryDelivery,
-            onChange: this.onCountryDeliveryChange,
-            onRemove: this.removeCountryDeliveryNewRaw,
-            addNewRaw: this.addCountryDeliveryNewRaw
-        });
-
         var showDistrictDelivery = () => showDataWithSelectTemplate({
             mainTitle: 'Доставка по областям',
             selectTitle: 'Область',
@@ -328,7 +494,12 @@ class NewProduct extends React.Component {
             mainDataArray: this.state.districtDelivery,
             onChange: this.onDistrictDeliveryChange,
             onRemove: this.removeDistrictDeliveryNewRaw,
-            addNewRaw: this.addDistrictDeliveryNewRaw
+            addNewRaw: this.addDistrictDeliveryNewRaw,
+            prop: {
+                name: "price",
+                label: "Цена",
+                addon: "грн"
+            }
         });
 
         var showCityDelivery = () => showDataWithSelectTemplate({
@@ -338,7 +509,42 @@ class NewProduct extends React.Component {
             mainDataArray: this.state.cityDelivery,
             onChange: this.onCityDeliveryChange,
             onRemove: this.removeCityDeliveryNewRaw,
-            addNewRaw: this.addCityDeliveryNewRaw
+            addNewRaw: this.addCityDeliveryNewRaw,
+            prop: {
+                name: "price",
+                label: "Цена",
+                addon: "грн"
+            }
+        });
+
+        var showDistrictShipmentDelay = () => showDataWithSelectTemplate({
+            mainTitle: 'Время доставки по областям',
+            selectTitle: 'Область',
+            selectDataArray: this.state.districts,
+            mainDataArray: this.state.districtShipmentDelay,
+            onChange: this.onDistrictShipmentDelayChange,
+            onRemove: this.removeDistrictShipmentDelayNewRaw,
+            addNewRaw: this.addDistrictShipmentDelayNewRaw,
+            prop: {
+                name: "days",
+                label: "Дней",
+                addon: "дней"
+            }
+        });
+
+        var showCityShipmentDelay = () => showDataWithSelectTemplate({
+            mainTitle: 'Время доставки по городам',
+            selectTitle: 'Город',
+            selectDataArray: this.state.cities,
+            mainDataArray: this.state.cityShipmentDelay,
+            onChange: this.onCityShipmentDelayChange,
+            onRemove: this.removeCityShipmentDelayNewRaw,
+            addNewRaw: this.addCityShipmentDelayNewRaw,
+            prop: {
+                name: "days",
+                label: "Дней",
+                addon: "дней"
+            }
         });
 
         return <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 new-address-page">
@@ -368,7 +574,31 @@ class NewProduct extends React.Component {
                 <label>
                     Перетащите сюда фото продукта:
                     <DragnDropPictureLoader onChange={this.onFilesChange('images')}
+                                            onDeleteImage={this.onDeleteImage}
                                             files={this.state.images}/>
+                </label>
+                <label className="brand-container">
+                    Торговая марка:
+
+                    <div class="dropdown">
+                        <input className="form-control" type="text"
+                               name="brand_name"
+                               value={this.state.brand_name}
+                               onChange={this.onChange}/>
+                        <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {this.state.brands.map((item, index) => {
+                                return <li className="brand"
+                                           role="presentation"
+                                           data-placement="bottom"
+                                           data-toggle="tooltip" title={item.description}
+                                           onClick={(e) => this.chooseBrand(e, item)}>
+                                    <img className="brand-logo" src={item.image} alt=""/>
+                                    <span className="name">{item.name}</span>
+                                </li>
+                            })}
+                        </ul>
+                    </div>
+
                 </label>
                 <label>
                     { this.state.wholesalePrices.length
@@ -377,16 +607,6 @@ class NewProduct extends React.Component {
                         <button className="btn btn-primary btn-add-wholesale-prices"
                                 onClick={this.addWholesalePrices}>
                             Добавить оптовые цены
-                        </button>
-                    }
-                </label>
-                <label>
-                    { this.state.countryDelivery.length
-                        ? showCountryDelivery()
-                        :
-                        <button className="btn btn-primary btn-add-wholesale-prices"
-                                onClick={this.addCountryDelivery}>
-                            Добавить доставку по странам
                         </button>
                     }
                 </label>
@@ -407,6 +627,26 @@ class NewProduct extends React.Component {
                         <button className="btn btn-primary btn-add-wholesale-prices"
                                 onClick={this.addCityDelivery}>
                             Добавить доставку по городам
+                        </button>
+                    }
+                </label>
+                <label>
+                    { this.state.districtShipmentDelay.length
+                        ? showDistrictShipmentDelay()
+                        :
+                        <button className="btn btn-primary btn-add-wholesale-prices"
+                                onClick={this.addDistrictShipmentDelay}>
+                            Добавить время доставки по областям
+                        </button>
+                    }
+                </label>
+                <label>
+                    { this.state.cityShipmentDelay.length
+                        ? showCityShipmentDelay()
+                        :
+                        <button className="btn btn-primary btn-add-wholesale-prices"
+                                onClick={this.addCityShipmentDelay}>
+                            Добавить время доставки по городам
                         </button>
                     }
                 </label>

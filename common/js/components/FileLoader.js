@@ -95,18 +95,18 @@ class FileLoader extends React.Component {
                     })}
 
                     {this.state.isMultiple
-                        ? <button className="btn btn-plus btn-default">
+                        ? <div className="btn btn-plus btn-default">
                             <i className="glyphicon glyphicon-plus"/>
                             <input type="file" multiple={this.state.isMultiple} onChange={this.onImagesAdditionalLoad}/>
-                        </button>
+                        </div>
                         : null
                     }
 
                 </div>
-                : <button className="btn btn-default">
+                : <div className="btn btn-default">
                     <i className="glyphicon glyphicon-file"/>
                     <input type="file" multiple={this.state.isMultiple} onChange={this.onImagesLoad}/>
-                </button>
+                </div>
             }
 
         </div>

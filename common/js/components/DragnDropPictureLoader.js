@@ -34,6 +34,10 @@ class DragnDropPictureLoader extends React.Component {
 
     deleteImage(e, indexToDel) {
         e.stopPropagation();
+        e.preventDefault();
+        if(this.state.onDeleteImage) {
+            this.state.onDeleteImage(this.state.files[indexToDel]);
+        }
         this.state.files = this.state.files.filter((item, index) => index != indexToDel);
         this.onChange();
     }
@@ -96,9 +100,11 @@ class DragnDropPictureLoader extends React.Component {
                     {this.state.files.map((photo, index) => {
                         return addImg(photo, index);
                     })}
-                    <button className="add-more">
+                    <div className="btn btn-action btn-secondary add-more">
+                        <input type="file" multiple
+                            onChange={this.onImagesAdditionalLoad}/>
                         <span>+</span>
-                    </button>
+                    </div>
                 </div>
                 : <span className="title">
                     Загрузить файлы

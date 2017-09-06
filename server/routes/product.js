@@ -18,6 +18,18 @@ router.post('/product', function (req, res, next) {
 });
 
 /**
+ * Редактирование продукта
+ */
+router.put('/product/:id', function (req, res, next) {
+    var data = Object.assign({seller_id: req.authUser.id}, req.body);
+    ProductController.update(data).then((data) => {
+        res.send({data: data});
+    }).catch((err) => {
+        next(err);
+    });
+});
+
+/**
  * Получение продуктов по q
  */
 router.get('/product', function (req, res, next) {
@@ -48,17 +60,6 @@ router.get('/product/category/:category_id', function (req, res, next) {
     }).catch((err) => {
         next(err);
     });
-});
-
-/**
- * Получение данных для редактирования
- */
-router.get('/product/edit', function (req, res, next) {
-    // var getProduct = ProductController.getByCategory(+req.params.category_id).then((data) => {
-    //     res.send({data: data});
-    // }).catch((err) => {
-    //     next(err);
-    // });
 });
 
 /**

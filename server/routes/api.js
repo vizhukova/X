@@ -13,5 +13,6 @@ router.use(redirect);
 router.use(api_prefix, require('./address'));
 router.use(api_prefix, require('./category'));
 router.use(api_prefix, require('./product'));
+router.use(api_prefix, require('./brand'));
 
 module.exports = router;
